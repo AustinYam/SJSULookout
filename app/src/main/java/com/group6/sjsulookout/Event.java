@@ -24,7 +24,7 @@ public class Event {
         this.startTime = startTime;
         this.endTime = endTime;
         this.id = id;
-        this.type = type
+        this.type = type;
         this.contact = contact;
 
     }

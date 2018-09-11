@@ -13,7 +13,7 @@ public class AllEvents extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
-    private  DatabaseReference mEventRef
+    private  DatabaseReference mEventRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class AllEvents extends AppCompatActivity {
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
-        mEventRef = myRef.child()
+        //mEventRef = myRef.child()
         mAuth = FirebaseAuth.getInstance();
 
     }
