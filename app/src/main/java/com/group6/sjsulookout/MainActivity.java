@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     //private ArrayList<String> events = new ArrayList<>();
 
     //Home menu options
-    private Button btnMyEvents;
+    private Button btnAddEvents;
     private Button btnExploreEvents;
 
     @Override
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Home Menu
-        btnMyEvents = (Button) findViewById(R.id.MyEvents);
+        btnAddEvents = (Button) findViewById(R.id.AddEvents);
         btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
 
         //events
@@ -93,6 +93,14 @@ public class MainActivity extends AppCompatActivity {
                 toastMessage("Signing out...");
                 Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(backToLogin);
+            }
+        });
+
+        btnAddEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                startActivity(intentAddEvent);
             }
         });
 /*
