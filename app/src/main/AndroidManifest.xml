@@ -26,10 +26,13 @@
             android:label="Sign Up" />
         <activity
             android:name=".AllEvents"
-            android:label="Discover Events"></activity>
+            android:label="Discover Events" />
         <activity
             android:name=".AddEvent"
-            android:label="Add Event"
+            android:label="Add Event" />
+        <activity
+            android:name=".UserEvents"
+            android:label="User Events"
             ></activity>
     </application>
 

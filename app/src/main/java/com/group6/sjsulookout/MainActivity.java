@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     //Home menu options
     private Button btnAddEvents;
     private Button btnExploreEvents;
+    private Button btnUserEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //Home Menu
         btnAddEvents = (Button) findViewById(R.id.AddEvents);
         btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
+        btnUserEvents = (Button) findViewById(R.id.UserEvents);
 
         //events
        // eventList = (ListView) findViewById(R.id.EventList);
@@ -103,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intentAddEvent);
             }
         });
+
+        btnUserEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                startActivity(intentUserEvent);
+            }
+        });
+
 /*
         myRef.addChildEventListener(new ChildEventListener() {
 
