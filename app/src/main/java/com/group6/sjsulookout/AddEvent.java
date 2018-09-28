@@ -53,7 +53,7 @@ public class AddEvent extends AppCompatActivity {
                 myEventLocation.setValue(location);
                 myEventDesc.setValue(desc);
 
-                toastMessage("Successfully posted event: " + title);
+                toastMessage("Successfully posted: "+title);
 
                 mTitle.getText().clear();
                 mLocation.getText().clear();
