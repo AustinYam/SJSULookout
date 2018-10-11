@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     Log.d(TAG, "onAuthStateChanged:signed_in" + user.getUid());
-                   // toastMessage("Successfully signed in with: " + user.getEmail());
+                    if(!user.isEmailVerified()){
+                        user.sendEmailVerification();
+                    }
                 }else{
                     Log.d(TAG, "onAuthStateChanged:signed_out");
 
@@ -114,48 +116,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-/*
-        myRef.addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String value = dataSnapshot.getValue(String.class);
-
-                events.add(value);
-
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
- */
     }
-/*
-    private void showData(DataSnapshot dataSnapshot){
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            Event event = new Event();
 
-        }
-    }
-*/
 
     @Override
     public void onStart(){

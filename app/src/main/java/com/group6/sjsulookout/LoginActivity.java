@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mSignUp;
     private Button btnLogin;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
