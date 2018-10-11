@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 toastMessage("Signing out...");
                 Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(backToLogin);
+                finish();
             }
         });
 
