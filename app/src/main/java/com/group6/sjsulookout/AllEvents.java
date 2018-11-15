@@ -21,12 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AllEvents extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     ListView myListView;
     ArrayList<String> myArrayList = new ArrayList<>();
+    Map<String,String> map = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,9 @@ public class AllEvents extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String title = dataSnapshot.child("title").getValue(String.class);
+                String desc = dataSnapshot.child("description").getValue(String.class);
                 myArrayList.add(title);
+                map.put(title,desc);
                 myArrayAdapter.notifyDataSetChanged();
                 Log.d("TAG", title + "");
 
@@ -76,6 +81,7 @@ public class AllEvents extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AllEvents.this, EventPage.class);
                 intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", map.get(myArrayList.get(position)));
                 startActivity(intent);
             }
         });

@@ -25,6 +25,7 @@ public class EventPage extends AppCompatActivity {
 
         //Data from last activity
         String eventTitle = getIntent().getStringExtra("EventTitle");
+        String eventDesc = getIntent().getStringExtra("EventDesc");
 
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -38,6 +39,7 @@ public class EventPage extends AppCompatActivity {
         TextView contact = (TextView) findViewById(R.id.ContactView);
 
         title.setText(eventTitle);
+        desc.setText(eventDesc);
 
         myRef.orderByChild("title").equalTo(eventTitle).addChildEventListener(new ChildEventListener() {
             @Override
