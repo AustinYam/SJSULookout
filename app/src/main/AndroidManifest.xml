@@ -32,8 +32,11 @@
             android:label="Add Event" />
         <activity
             android:name=".UserEvents"
-            android:label="User Events"
-            ></activity>
+            android:label="User Events" />
+        <activity
+            android:name=".EventPage"
+            android:label="Event">
+        </activity>
     </application>
 
 </manifest>
