@@ -33,6 +33,7 @@ public class AllEvents extends AppCompatActivity {
     Map<String,String> mapLoca = new HashMap<>();
     Map<String,String> mapDate = new HashMap<>();
     Map<String,String> mapCont = new HashMap<>();
+    Map<String,Integer> mapId = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +55,13 @@ public class AllEvents extends AppCompatActivity {
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String date = dataSnapshot.child("date").getValue(String.class);
                 String contact = dataSnapshot.child("contact").getValue(String.class);
+                int id = dataSnapshot.child("id").getValue(Integer.class);
                 myArrayList.add(title);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
                 mapDate.put(title, date);
                 mapCont.put(title,contact);
+                mapId.put(title,id);
                 myArrayAdapter.notifyDataSetChanged();
                 Log.d("TAG", title + "");
 
@@ -94,6 +97,7 @@ public class AllEvents extends AppCompatActivity {
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
                 intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 startActivity(intent);
             }
         });

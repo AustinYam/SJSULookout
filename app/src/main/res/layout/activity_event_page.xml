@@ -68,10 +68,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="49dp" />
 
+            <Button
+                android:id="@+id/attendEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Attend Event"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="379dp" />
+
 
         </LinearLayout>
 
     </ScrollView>
+
+
 
 
 </android.support.constraint.ConstraintLayout>
