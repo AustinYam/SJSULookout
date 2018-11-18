@@ -10,5 +10,6 @@
     <string name="location">Location</string>
     <string name="content">Type to add content...</string>
     <string name="add_event">Add Event</string>
+    <string name="name">Name</string>
 
 </resources>

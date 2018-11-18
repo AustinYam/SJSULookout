@@ -16,10 +16,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private EditText editTextEmail, editTextPassword;
+    private EditText editTextEmail, editTextPassword, editTextName;
     private TextView login;
     private Button signUp;
     private FirebaseAuth mAuth;
@@ -31,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         editTextEmail = findViewById(R.id.lEmail);
         editTextPassword = findViewById(R.id.lPassword);
+        editTextName = findViewById(R.id.lName);
         findViewById(R.id.signIn).setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -73,9 +79,22 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    String user_id = mAuth.getCurrentUser().getUid();
+                    DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+
+                    String name = editTextName.getText().toString();
+                    String userEmail = editTextEmail.getText().toString();
+
+                    Map newPost = new HashMap();
+                    newPost.put("name", name);
+                    newPost.put("email", userEmail);
+                    current_user_db.setValue(newPost);
+
                     Toast.makeText(getApplicationContext(), "User Sign Up Successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);
+                }else{
+                    toastMessage("User Sign Up Unsuccessful!");
                 }
             }
         });
@@ -98,5 +117,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onEventClickLogin(View v){
         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 }
