@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.UUID;
+
 public class EventPage extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -62,7 +64,9 @@ public class EventPage extends AppCompatActivity {
             public void onClick(View v) {
                 DatabaseReference userRef = myRef.child(user_id);
                 DatabaseReference eventRef = userRef.child("AttendingEvents");
-                DatabaseReference eventIdRef = eventRef.child("eventId");
+                DatabaseReference myEventChild = eventRef.child(""+UUID.randomUUID());
+                DatabaseReference eventIdRef = myEventChild.child("event_id");
+
                 eventIdRef.setValue(eventId);
 
                 toastMessage("Attending Event: " + eventTitle);
