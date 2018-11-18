@@ -29,10 +29,7 @@ public class AllEvents extends AppCompatActivity {
     private DatabaseReference myRef;
     ListView myListView;
     ArrayList<String> myArrayList = new ArrayList<>();
-    Map<String,String> mapDesc = new HashMap<>();
-    Map<String,String> mapLoca = new HashMap<>();
-    Map<String,String> mapDate = new HashMap<>();
-    Map<String,String> mapCont = new HashMap<>();
+    Map<String,String> map = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +48,8 @@ public class AllEvents extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
-                String loca = dataSnapshot.child("location").getValue(String.class);
-                String date = dataSnapshot.child("date").getValue(String.class);
-                String contact = dataSnapshot.child("contact").getValue(String.class);
                 myArrayList.add(title);
-                mapDesc.put(title,desc);
-                mapLoca.put(title,loca);
-                mapDate.put(title,date);
-                mapCont.put(title,contact);
+                map.put(title,desc);
                 myArrayAdapter.notifyDataSetChanged();
                 Log.d("TAG", title + "");
 
@@ -90,10 +81,7 @@ public class AllEvents extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(AllEvents.this, EventPage.class);
                 intent.putExtra("EventTitle", myArrayList.get(position));
-                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
-                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
-                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
-                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventDesc", map.get(myArrayList.get(position)));
                 startActivity(intent);
             }
         });
