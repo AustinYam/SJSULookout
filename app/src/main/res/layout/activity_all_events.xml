@@ -9,13 +9,21 @@
     <ListView
         android:id="@+id/ListEvent"
         android:layout_width="0dp"
+<<<<<<< HEAD
         android:layout_height="495dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+=======
+        android:layout_height="0dp"
+>>>>>>> 85a2176f8c38f39b389ac29378a2da23cd9f6bc5
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
