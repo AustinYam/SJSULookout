@@ -147,21 +147,6 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="244dp"
-        android:layout_height="158dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/lookout" />
-
-    <ImageView
         android:id="@+id/imageView5"
         android:layout_width="98dp"
         android:layout_height="92dp"
@@ -174,5 +159,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="297dp"
+        android:layout_height="121dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="180dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/lookoutWords" />
 
 </android.support.constraint.ConstraintLayout>
