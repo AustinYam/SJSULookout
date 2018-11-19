@@ -55,7 +55,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/IconBG"
-                app:srcCompat="@drawable/Person" />
+                app:srcCompat="@drawable/user" />
 
         </FrameLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/IconBG"
-                app:srcCompat="@drawable/LockOutline" />
+                app:srcCompat="@drawable/lock" />
 
         </FrameLayout>
 
