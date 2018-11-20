@@ -33,10 +33,10 @@ public class EventPage extends AppCompatActivity {
 
         //Data from last activity
         final String eventTitle = getIntent().getStringExtra("EventTitle");
-        String eventDesc = getIntent().getStringExtra("EventDesc");
-        String eventLoca = getIntent().getStringExtra("EventLocation");
-        String eventDate = getIntent().getStringExtra("EventDate");
-        String eventContact = getIntent().getStringExtra("EventContact");
+        final String eventDesc = getIntent().getStringExtra("EventDesc");
+        final String eventLoca = getIntent().getStringExtra("EventLocation");
+        final String eventDate = getIntent().getStringExtra("EventDate");
+        final String eventContact = getIntent().getStringExtra("EventContact");
         final int eventId = getIntent().getIntExtra("EventId", 0);
 
 
@@ -64,10 +64,22 @@ public class EventPage extends AppCompatActivity {
             public void onClick(View v) {
                 DatabaseReference userRef = myRef.child(user_id);
                 DatabaseReference eventRef = userRef.child("AttendingEvents");
+
                 DatabaseReference myEventChild = eventRef.child(""+UUID.randomUUID());
                 DatabaseReference eventIdRef = myEventChild.child("event_id");
+                DatabaseReference eventTitleRef = myEventChild.child("title");
+                DatabaseReference eventLocationRef = myEventChild.child("location");
+                DatabaseReference eventDateRef = myEventChild.child("date");
+                DatabaseReference eventDescRef = myEventChild.child("description");
+                DatabaseReference eventContactRef = myEventChild.child("contact");
 
                 eventIdRef.setValue(eventId);
+                eventTitleRef.setValue(eventTitle);
+                eventLocationRef.setValue(eventLoca);
+                eventDateRef.setValue(eventDate);
+                eventDescRef.setValue(eventDesc);
+                eventContactRef.setValue(eventContact);
+
 
                 toastMessage("Attending Event: " + eventTitle);
             }

@@ -12,5 +12,8 @@
     <string name="contents">Type to add content...</string>
     <string name="add_event">Add Event</string>
     <string name="name">Name</string>
-
+    <string name="menu_item2">User Events</string>
+    <string name="menu_item1">Explore Events</string>
+    <string name="menu_item3">Add Events</string>
+    <string name="menu_item4">Sign Out</string>
 </resources>

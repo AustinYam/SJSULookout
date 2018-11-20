@@ -3,9 +3,15 @@ package com.group6.sjsulookout;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,29 +38,37 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private Button btnSignOut;
     private DatabaseReference myRef;
+    private DrawerLayout mDrawerLayout;
 
     //events test
     //private ListView eventList;
     //private ArrayList<String> events = new ArrayList<>();
 
-    //Home menu options
-    private Button btnAddEvents;
-    private Button btnExploreEvents;
-    private Button btnUserEvents;
+//    //Home menu options
+//    private Button btnAddEvents;
+//    private Button btnExploreEvents;
+//    private Button btnUserEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Home Menu
-        btnAddEvents = (Button) findViewById(R.id.AddEvents);
-        btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
-        btnUserEvents = (Button) findViewById(R.id.UserEvents);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_menuicon);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        //events
-       // eventList = (ListView) findViewById(R.id.EventList);
-        btnSignOut = (Button) findViewById(R.id.signOut);
+//        //Home Menu
+//        btnAddEvents = (Button) findViewById(R.id.AddEvents);
+//        btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
+//        btnUserEvents = (Button) findViewById(R.id.UserEvents);
+//
+//        //events
+//       // eventList = (ListView) findViewById(R.id.EventList);
+//        btnSignOut = (Button) findViewById(R.id.signOut);
 
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -76,47 +90,90 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else{
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-
-
                 }
             }
         };
 
-        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v){
-                Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-                startActivity(exploreEvents);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.ExploreEvents:
+                        // Handle explore events click
+                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+                        startActivity(exploreEvents);
+                        return true;
+                    case R.id.UserEvents:
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        // Handle logout click
+                        mAuth.signOut();
+                    toastMessage("Signing out...");
+                    Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(backToLogin);
+                    finish();
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
 
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                toastMessage("Signing out...");
-                Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(backToLogin);
-                finish();
-            }
-        });
+//        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+//                startActivity(exploreEvents);
+//            }
+//        });
+//
+//        btnSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAuth.signOut();
+//                toastMessage("Signing out...");
+//                Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(backToLogin);
+//                finish();
+//            }
+//        });
+//
+//        btnAddEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+//                startActivity(intentAddEvent);
+//            }
+//        });
+//
+//        btnUserEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+//                startActivity(intentUserEvent);
+//            }
+//        });
 
-        btnAddEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
-                startActivity(intentAddEvent);
-            }
-        });
+    }
 
-        btnUserEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
-                startActivity(intentUserEvent);
-            }
-        });
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
