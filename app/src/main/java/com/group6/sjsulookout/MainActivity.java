@@ -37,24 +37,24 @@ public class MainActivity extends AppCompatActivity {
     //private ListView eventList;
     //private ArrayList<String> events = new ArrayList<>();
 
-    //Home menu options
-    private Button btnAddEvents;
-    private Button btnExploreEvents;
-    private Button btnUserEvents;
+//    //Home menu options
+//    private Button btnAddEvents;
+//    private Button btnExploreEvents;
+//    private Button btnUserEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Home Menu
-        btnAddEvents = (Button) findViewById(R.id.AddEvents);
-        btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
-        btnUserEvents = (Button) findViewById(R.id.UserEvents);
-
-        //events
-       // eventList = (ListView) findViewById(R.id.EventList);
-        btnSignOut = (Button) findViewById(R.id.signOut);
+//        //Home Menu
+//        btnAddEvents = (Button) findViewById(R.id.AddEvents);
+//        btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
+//        btnUserEvents = (Button) findViewById(R.id.UserEvents);
+//
+//        //events
+//       // eventList = (ListView) findViewById(R.id.EventList);
+//        btnSignOut = (Button) findViewById(R.id.signOut);
 
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -82,40 +82,40 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-                startActivity(exploreEvents);
-            }
-        });
-
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                toastMessage("Signing out...");
-                Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(backToLogin);
-                finish();
-            }
-        });
-
-        btnAddEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
-                startActivity(intentAddEvent);
-            }
-        });
-
-        btnUserEvents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
-                startActivity(intentUserEvent);
-            }
-        });
+//        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+//                startActivity(exploreEvents);
+//            }
+//        });
+//
+//        btnSignOut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAuth.signOut();
+//                toastMessage("Signing out...");
+//                Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(backToLogin);
+//                finish();
+//            }
+//        });
+//
+//        btnAddEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+//                startActivity(intentAddEvent);
+//            }
+//        });
+//
+//        btnUserEvents.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+//                startActivity(intentUserEvent);
+//            }
+//        });
 
     }
 
