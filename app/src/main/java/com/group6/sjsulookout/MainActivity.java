@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()) {
+                    case R.id.attendingEvents:
+                        // Handle explore events click
+                        Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
+                        startActivity(attendEvents);
+                        return true;
                     case R.id.ExploreEvents:
                         // Handle explore events click
                         Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
