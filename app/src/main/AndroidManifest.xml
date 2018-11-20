@@ -35,8 +35,8 @@
             android:label="User Events" />
         <activity
             android:name=".EventPage"
-            android:label="Event">
-        </activity>
+            android:label="Event"></activity>
+        <activity android:name=".AttendingEvents"></activity>
     </application>
 
 </manifest>

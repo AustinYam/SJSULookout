@@ -3,9 +3,11 @@ package com.group6.sjsulookout;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -81,6 +83,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.ExploreEvents:
+                        // Handle explore events click
+                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+                        startActivity(exploreEvents);
+                        return true;
+                    case R.id.UserEvents:
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        // Handle logout click
+                        mAuth.signOut();
+                    toastMessage("Signing out...");
+                    Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(backToLogin);
+                    finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
 //        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
 //            @Override
