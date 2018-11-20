@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else{
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-
-
                 }
             }
         };
