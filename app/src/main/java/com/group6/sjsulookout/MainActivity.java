@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TOOLBAR & NAV DRAWER
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // NAV BAR BUTTON FUNCTIONALITY
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
