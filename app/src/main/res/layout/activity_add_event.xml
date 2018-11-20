@@ -10,21 +10,21 @@
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="371dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
         android:background="@drawable/add_event_innerbox_round"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/BtnAddEvent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/Description"
+            android:id="@+id/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -46,17 +46,39 @@
             app:layout_constraintTop_toBottomOf="@+id/Location" />
 
         <EditText
-            android:id="@+id/Title"
+            android:id="@+id/Description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
-            android:hint="@string/location"
+            android:hint="@string/place"
+            android:inputType="textEmailAddress"
+            android:padding="4dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/Time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/edit_text_border"
+            android:ems="10"
+            android:hint="@string/time"
             android:inputType="textEmailAddress"
             android:padding="4dp"
             android:textColor="@color/white"
@@ -67,17 +89,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/Location"
+            android:id="@+id/Content"
             android:layout_width="match_parent"
-            android:layout_height="217dp"
+            android:layout_height="320dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
-            android:hint="@string/content"
+            android:gravity="top"
+            android:hint="@string/contents"
             android:inputType="textEmailAddress"
             android:padding="4dp"
             android:textColor="@color/white"
@@ -91,15 +115,16 @@
 
     <Button
         android:id="@+id/BtnAddEvent"
-        android:layout_width="177dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginBottom="44dp"
-        android:layout_marginEnd="102dp"
-        android:layout_marginLeft="102dp"
-        android:layout_marginRight="102dp"
-        android:layout_marginStart="102dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
         android:background="@color/golden_yellow"
         android:text="@string/add_event"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

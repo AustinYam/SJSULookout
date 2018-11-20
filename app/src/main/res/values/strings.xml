@@ -7,8 +7,9 @@
     <string name="signup">Sign Up</string>
     <string name="signout">Sign Out</string>
     <string name="title">Title</string>
-    <string name="location">Location</string>
-    <string name="content">Type to add content...</string>
+    <string name="place">Location</string>
+    <string name="time">Date and Time</string>
+    <string name="contents">Type to add content...</string>
     <string name="add_event">Add Event</string>
     <string name="name">Name</string>
 
