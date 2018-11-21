@@ -37,11 +37,11 @@ public class AllEvents extends AppCompatActivity {
     private DatabaseReference myRef;
     ListView myListView;
     ArrayList<String> myArrayList = new ArrayList<>();
-    Map<String,String> mapDesc = new HashMap<>();
-    Map<String,String> mapLoca = new HashMap<>();
-    Map<String,String> mapDate = new HashMap<>();
-    Map<String,String> mapCont = new HashMap<>();
-    Map<String,Integer> mapId = new HashMap<>();
+    Map<String, String> mapDesc = new HashMap<>();
+    Map<String, String> mapLoca = new HashMap<>();
+    Map<String, String> mapDate = new HashMap<>();
+    Map<String, String> mapCont = new HashMap<>();
+    Map<String, Integer> mapId = new HashMap<>();
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -74,11 +74,11 @@ public class AllEvents extends AppCompatActivity {
                 String contact = dataSnapshot.child("email").getValue(String.class);
                 int id = dataSnapshot.child("id").getValue(Integer.class);
                 myArrayList.add(title);
-                mapDesc.put(title,desc);
-                mapLoca.put(title,location);
+                mapDesc.put(title, desc);
+                mapLoca.put(title, location);
                 mapDate.put(title, date);
-                mapCont.put(title,contact);
-                mapId.put(title,id);
+                mapCont.put(title, contact);
+                mapId.put(title, id);
                 myArrayAdapter.notifyDataSetChanged();
                 Log.d("TAG", title + "");
 
@@ -140,7 +140,7 @@ public class AllEvents extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View view = getLayoutInflater().inflate(R.layout.custom_layout,null);
+            View view = getLayoutInflater().inflate(R.layout.custom_layout, null);
             ImageView icon = (ImageView) view.findViewById(R.id.imageView);
             TextView myTitle = (TextView) view.findViewById(R.id.titleView);
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
@@ -148,20 +148,20 @@ public class AllEvents extends AppCompatActivity {
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
 
-
             return view;
         }
+    }
+        // NAV DRAWER BUTTON FUNCTIONALITY
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    mDrawerLayout.openDrawer(GravityCompat.START);
+                    return true;
+            }
+            return super.onOptionsItemSelected(item);
 
-    // NAV DRAWER BUTTON FUNCTIONALITY
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
         }
-        return super.onOptionsItemSelected(item);
 
     }
 
-}
