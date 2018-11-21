@@ -73,6 +73,7 @@
         android:layout_marginStart="38dp"
         android:background="@color/golden_yellow"
         android:text="@string/signup"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

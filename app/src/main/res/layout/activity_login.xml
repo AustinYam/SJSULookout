@@ -105,6 +105,7 @@
             android:layout_marginTop="30dp"
             android:background="@color/golden_yellow"
             android:text="@string/login"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lPassword" />
