@@ -12,9 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,7 +61,7 @@ public class AllEvents extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("events");
         myListView = (ListView) findViewById(R.id.ListEvent);
-        final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArrayList);
+        final CustomAdapter myArrayAdapter = new CustomAdapter();
         myListView.setAdapter(myArrayAdapter);
 
         ChildEventListener childEventListener = myRef.addChildEventListener(new ChildEventListener() {
@@ -66,9 +69,9 @@ public class AllEvents extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
-                String location = dataSnapshot.child("location").getValue(String.class);
+                String location = dataSnapshot.child("location information").getValue(String.class);
                 String date = dataSnapshot.child("date").getValue(String.class);
-                String contact = dataSnapshot.child("contact").getValue(String.class);
+                String contact = dataSnapshot.child("email").getValue(String.class);
                 int id = dataSnapshot.child("id").getValue(Integer.class);
                 myArrayList.add(title);
                 mapDesc.put(title,desc);
@@ -118,6 +121,37 @@ public class AllEvents extends AppCompatActivity {
 
     }
 
+    class CustomAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+
+            return myArrayList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.custom_layout,null);
+            ImageView icon = (ImageView) view.findViewById(R.id.imageView);
+            TextView myTitle = (TextView) view.findViewById(R.id.titleView);
+            TextView myDate = (TextView) view.findViewById(R.id.dateView);
+            Log.d("TAG", myArrayList.size() + "");
+            Log.d("TAG", myArrayList.get(position) + "");
+            myTitle.setText(myArrayList.get(position));
+
+
+            return view;
+        }
+
     // NAV DRAWER BUTTON FUNCTIONALITY
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -127,6 +161,7 @@ public class AllEvents extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+
     }
 
 }
