@@ -1,7 +1,9 @@
 package com.group6.sjsulookout;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,7 +14,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 public class UserEvents extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
     private DatabaseReference myRef;
     private ListView myListView;
     private ArrayList<String> userEvents = new ArrayList<>();
@@ -45,6 +50,7 @@ public class UserEvents extends AppCompatActivity {
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("UserEvents");
+        mAuth = FirebaseAuth.getInstance(); // for sign out button function
         myListView = (ListView) findViewById(R.id.ListUserEvent);
         final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userEvents);
         myListView.setAdapter(myArrayAdapter);
@@ -80,6 +86,56 @@ public class UserEvents extends AppCompatActivity {
             }
         });
 
+        // NAV DRAWER ITEMS - CLICK LISTENER
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.attendingEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
+                        startActivity(attendEvents);
+                        return true;
+                    case R.id.ExploreEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+                        startActivity(exploreEvents);
+                        return true;
+                    case R.id.UserEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle logout click
+                        mAuth.signOut();
+                        toastMessage("Signing out...");
+                        Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(backToLogin);
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
 
     }
 
@@ -92,5 +148,9 @@ public class UserEvents extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,6 +3,7 @@ package com.group6.sjsulookout;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -43,6 +45,7 @@ public class AllEvents extends AppCompatActivity {
     Map<String, String> mapCont = new HashMap<>();
     Map<String, Integer> mapId = new HashMap<>();
     private DrawerLayout mDrawerLayout;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class AllEvents extends AppCompatActivity {
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("events");
+        mAuth = FirebaseAuth.getInstance(); // for sign out button function
         myListView = (ListView) findViewById(R.id.ListEvent);
         final CustomAdapter myArrayAdapter = new CustomAdapter();
         myListView.setAdapter(myArrayAdapter);
@@ -119,6 +123,56 @@ public class AllEvents extends AppCompatActivity {
             }
         });
 
+        // NAV DRAWER ITEMS - CLICK LISTENER
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.attendingEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
+                        startActivity(attendEvents);
+                        return true;
+                    case R.id.ExploreEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
+                        startActivity(exploreEvents);
+                        return true;
+                    case R.id.UserEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle logout click
+                        mAuth.signOut();
+                        toastMessage("Signing out...");
+                        Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(backToLogin);
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
     }
 
     class CustomAdapter extends BaseAdapter {
@@ -151,17 +205,24 @@ public class AllEvents extends AppCompatActivity {
             return view;
         }
     }
-        // NAV DRAWER BUTTON FUNCTIONALITY
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case android.R.id.home:
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                    return true;
-            }
-            return super.onOptionsItemSelected(item);
 
+    // NAV DRAWER BUTTON FUNCTIONALITY
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
+        return super.onOptionsItemSelected(item);
 
     }
+
+
+    // TOAST MESSAGE FOR SIGNOUT BUTTON
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+}
 

@@ -78,56 +78,68 @@ public class MainActivity extends AppCompatActivity {
 
         //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,events);
 
-       // eventList.setAdapter(arrayAdapter);
+        // eventList.setAdapter(arrayAdapter);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
+                if (user != null) {
                     Log.d(TAG, "onAuthStateChanged:signed_in" + user.getUid());
-                    if(!user.isEmailVerified()){
+                    if (!user.isEmailVerified()) {
                         user.sendEmailVerification();
                     }
-                }else{
+                } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
         };
 
+
+        // NAV DRAWER ITEMS - CLICK LISTENER
         NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
 
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()) {
+                switch (item.getItemId()) {
                     case R.id.attendingEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
                         Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
                         startActivity(attendEvents);
                         return true;
                     case R.id.ExploreEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
                         Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
                         startActivity(exploreEvents);
                         return true;
                     case R.id.UserEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle user events click
                         Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
                         startActivity(intentUserEvent);
                         return true;
                     case R.id.AddEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle add event click
                         Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
                         startActivity(intentAddEvent);
                         return true;
                     case R.id.signOut:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle logout click
                         mAuth.signOut();
-                    toastMessage("Signing out...");
-                    Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(backToLogin);
-                    finish();
+                        toastMessage("Signing out...");
+                        Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(backToLogin);
+                        finish();
                         return true;
                     default:
                         return false;
@@ -185,17 +197,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
-    private void toastMessage(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
