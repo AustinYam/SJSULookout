@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -102,6 +103,20 @@ public class AttendingEvents extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(AttendingEvents.this, EventPage.class);
+                intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                startActivity(intent);
             }
         });
 
