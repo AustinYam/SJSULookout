@@ -84,13 +84,14 @@ public class EventPage extends AppCompatActivity {
                 DatabaseReference eventContactRef = myEventChild.child("contact");
                 DatabaseReference eventAttendeeRef = myEventChild.child("attendees");
 
+
                 eventIdRef.setValue(eventId);
                 eventTitleRef.setValue(eventTitle);
                 eventLocationRef.setValue(eventLoca);
                 eventDateRef.setValue(eventDate);
                 eventDescRef.setValue(eventDesc);
                 eventContactRef.setValue(eventContact);
-                eventAttendeeRef.setValue(eventCount);
+                eventAttendeeRef.setValue(attendees);
 
                 myEventChild.addValueEventListener(new ValueEventListener() {
                     @Override
