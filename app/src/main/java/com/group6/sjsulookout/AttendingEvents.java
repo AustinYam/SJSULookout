@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -47,8 +48,6 @@ public class AttendingEvents extends AppCompatActivity {
     public String mEventTitle;
     ListView mListView;
 
-    String[] names = {"ONE","TWO"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +72,13 @@ public class AttendingEvents extends AppCompatActivity {
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
-
+                String startDate = dataSnapshot.child("start date").getValue(String.class);
                 String id = dataSnapshot.child("event_id").getValue(Integer.class) +"";
                 mEventTitle = title;
                 myArrayList.add(mEventTitle);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
+                mapDate.put(title,startDate);
                 mapId.put(title,id);
                 listCounter+=1;
                 Log.d("TAG", title + "");
@@ -106,6 +106,20 @@ public class AttendingEvents extends AppCompatActivity {
             }
         });
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(AttendingEvents.this, EventPage.class);
+                intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                startActivity(intent);
+            }
+        });
+
         // TOOLBAR & NAV DRAWER
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,12 +141,12 @@ public class AttendingEvents extends AppCompatActivity {
                         Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
                         startActivity(attendEvents);
                         return true;
-                    case R.id.ExploreEvents:
+                    case R.id.MyHome:
                         item.setChecked(true); // set item as selected to persist highlight
                         mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
-                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-                        startActivity(exploreEvents);
+                        Intent myHome = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(myHome);
                         return true;
                     case R.id.UserEvents:
                         item.setChecked(true); // set item as selected to persist highlight
@@ -192,7 +206,7 @@ public class AttendingEvents extends AppCompatActivity {
             Log.d("TAG", myArrayList.size() + "");
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
-
+            myDate.setText(mapDate.get(myArrayList.get(position)));
 
             return view;
         }

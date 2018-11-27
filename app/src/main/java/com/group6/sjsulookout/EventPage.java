@@ -1,9 +1,17 @@
 package com.group6.sjsulookout;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,15 +24,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
 public class EventPage extends AppCompatActivity {
 
+    private DrawerLayout mDrawerLayout;
     private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
     private TextView eventTitle, eventLocation, eventDate, eventDesc, eventContact;
     private Button eventButton;
-    private DatabaseReference myRef;
+    private DatabaseReference myEventRef;
+    private DatabaseReference myUserRef;
+    private int newCount;
+    private boolean isAdded;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +52,41 @@ public class EventPage extends AppCompatActivity {
         final String eventLoca = getIntent().getStringExtra("EventLocation");
         final String eventDate = getIntent().getStringExtra("EventDate");
         final String eventContact = getIntent().getStringExtra("EventContact");
+        final String eventCount = getIntent().getStringExtra("EventCount");
         final int eventId = getIntent().getIntExtra("EventId", 0);
-
+        final int attendees = Integer.parseInt(eventCount);
+        newCount = attendees;
 
         //Firebase
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String user_id = ""+user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference().child("Users");
+
+        //QUERIE
+        myUserRef = mFirebaseDatabase.getReference().child("Users");
+        myEventRef = mFirebaseDatabase.getReference().child("events");
+        DatabaseReference mySpecUserRef = myUserRef.child(user_id);
+        final DatabaseReference attendUserEventRef = mySpecUserRef.child("AttendingEvents");
+        final DatabaseReference eventsRef = myEventRef.child("event"+eventId);
+
+        final DatabaseReference userEventIdRef = attendUserEventRef.child("event"+eventId);
+        userEventIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    isAdded = true;
+                }else{
+                    isAdded = false;
+                    //Add to event Attendees
+                    newCount +=1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         TextView title = (TextView) findViewById(R.id.TitleView);
         TextView location = (TextView) findViewById(R.id.LocationView);
@@ -59,32 +101,133 @@ public class EventPage extends AppCompatActivity {
         date.setText(eventDate);
         contact.setText(eventContact);
 
+
+
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference userRef = myRef.child(user_id);
-                DatabaseReference eventRef = userRef.child("AttendingEvents");
+                if(isAdded == false){
+                    DatabaseReference newAttendeesRef = eventsRef.child("attendees");
+                    newAttendeesRef.setValue(newCount);
+                    //Create user event
+                    DatabaseReference userEventRef = attendUserEventRef.child("event"+eventId);
+                    DatabaseReference idRef = userEventRef.child("id");
+                    DatabaseReference titleRef = userEventRef.child("title");
+                    DatabaseReference locationRef = userEventRef.child("location");
+                    DatabaseReference dateRef = userEventRef.child("start date");
+                    DatabaseReference attendeeRef = userEventRef.child("attendees");
+                    DatabaseReference contactRef = userEventRef.child("contact");
+                    DatabaseReference descRef = userEventRef.child("description");
+                    idRef.setValue(eventId);
+                    titleRef.setValue(eventTitle);
+                    locationRef.setValue(eventLoca);
+                    dateRef.setValue(eventDate);
+                    attendeeRef.setValue(attendees);
+                    contactRef.setValue(eventContact);
+                    descRef.setValue(eventDesc);
 
-                DatabaseReference myEventChild = eventRef.child(""+UUID.randomUUID());
-                DatabaseReference eventIdRef = myEventChild.child("event_id");
-                DatabaseReference eventTitleRef = myEventChild.child("title");
-                DatabaseReference eventLocationRef = myEventChild.child("location");
-                DatabaseReference eventDateRef = myEventChild.child("date");
-                DatabaseReference eventDescRef = myEventChild.child("description");
-                DatabaseReference eventContactRef = myEventChild.child("contact");
-
-                eventIdRef.setValue(eventId);
-                eventTitleRef.setValue(eventTitle);
-                eventLocationRef.setValue(eventLoca);
-                eventDateRef.setValue(eventDate);
-                eventDescRef.setValue(eventDesc);
-                eventContactRef.setValue(eventContact);
+                    toastMessage("Successfully added Event: " + eventTitle);
+                }else{
+                    toastMessage("Event Already Added");
+                }
 
 
-                toastMessage("Attending Event: " + eventTitle);
             }
         });
 
+        // TOOLBAR & NAV DRAWER
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_menuicon);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        // NAV DRAWER ITEMS - CLICK LISTENER
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.attendingEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
+                        startActivity(attendEvents);
+                        return true;
+                    case R.id.MyHome:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent myHome = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(myHome);
+                        return true;
+                    case R.id.UserEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle logout click
+                        mAuth.signOut();
+                        toastMessage("Signing out...");
+                        Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(backToLogin);
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+
+    }
+
+
+    public void refreshActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        refreshActivity();
+        super.onBackPressed();
+    }
+
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
+    }
+
+    // NAV BAR BUTTON FUNCTIONALITY
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void toastMessage(String message){
