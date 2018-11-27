@@ -1,5 +1,6 @@
 package com.group6.sjsulookout;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ public class EventPage extends AppCompatActivity {
     private TextView eventTitle, eventLocation, eventDate, eventDesc, eventContact;
     private Button eventButton;
     private DatabaseReference myRef;
+    private int newCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class EventPage extends AppCompatActivity {
         final String eventCount = getIntent().getStringExtra("EventCount");
         final int eventId = getIntent().getIntExtra("EventId", 0);
         final int attendees = Integer.parseInt(eventCount);
-
+        newCount = attendees;
 
         //Firebase
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,11 +75,11 @@ public class EventPage extends AppCompatActivity {
                 DatabaseReference userRef = myRef.child(user_id);
                 DatabaseReference eventRef = userRef.child("AttendingEvents");
 
-                DatabaseReference myEventChild = eventRef.child(""+UUID.randomUUID());
+                DatabaseReference myEventChild = eventRef.child("event"+eventId);
                 DatabaseReference eventIdRef = myEventChild.child("event_id");
                 DatabaseReference eventTitleRef = myEventChild.child("title");
                 DatabaseReference eventLocationRef = myEventChild.child("location");
-                DatabaseReference eventDateRef = myEventChild.child("date");
+                DatabaseReference eventDateRef = myEventChild.child("start date");
                 DatabaseReference eventDescRef = myEventChild.child("description");
                 DatabaseReference eventContactRef = myEventChild.child("contact");
                 DatabaseReference eventAttendeeRef = myEventChild.child("attendees");
@@ -88,16 +91,50 @@ public class EventPage extends AppCompatActivity {
                 eventDescRef.setValue(eventDesc);
                 eventContactRef.setValue(eventContact);
                 eventAttendeeRef.setValue(eventCount);
-                int newCount = attendees +1;
+
+                myEventChild.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild("event"+eventId)){
+                            int newCount = attendees +1;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
                 attendRef.setValue(newCount);
                 Log.d("TAG", newCount+"");
-
-
 
                 toastMessage("Attending Event: " + eventTitle);
             }
         });
 
+    }
+
+    public void refreshActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        finish();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        refreshActivity();
+        super.onBackPressed();
+    }
+
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
     }
 
     private void toastMessage(String message){
