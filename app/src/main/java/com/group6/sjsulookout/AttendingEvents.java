@@ -43,7 +43,6 @@ public class AttendingEvents extends AppCompatActivity {
     Map<String,String> mapDate = new HashMap<>();
     Map<String,String> mapCont = new HashMap<>();
     Map<String,String> mapId = new HashMap<>();
-    Map<String,Integer> mapCount = new HashMap<>();
     ArrayList<String> myArrayList = new ArrayList<>();
     public String mEventTitle;
     ListView mListView;
@@ -75,14 +74,12 @@ public class AttendingEvents extends AppCompatActivity {
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
-                int attendees = dataSnapshot.child("attendees").getValue(Integer.class);
                 String id = dataSnapshot.child("event_id").getValue(Integer.class) +"";
                 mEventTitle = title;
                 myArrayList.add(mEventTitle);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
                 mapDate.put(title,startDate);
-                mapCount.put(title,attendees);
                 mapId.put(title,id);
                 listCounter+=1;
                 Log.d("TAG", title + "");
@@ -193,12 +190,10 @@ public class AttendingEvents extends AppCompatActivity {
             ImageView icon = (ImageView) view.findViewById(R.id.imageView);
             TextView myTitle = (TextView) view.findViewById(R.id.titleView);
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
-            TextView myCount = (TextView) view.findViewById(R.id.CountView);
             Log.d("TAG", myArrayList.size() + "");
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapDate.get(myArrayList.get(position)));
-            
 
 
             return view;
