@@ -13,8 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,24 +42,23 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDatabase;
-    private Button btnSignOut;
     private DatabaseReference myRef;
+    ListView myListView;
+    ArrayList<String> myArrayList = new ArrayList<>();
+    Map<String, String> mapDesc = new HashMap<>();
+    Map<String, String> mapLoca = new HashMap<>();
+    Map<String, String> mapDate = new HashMap<>();
+    Map<String, String> mapCont = new HashMap<>();
+    Map<String, Integer> mapId = new HashMap<>();
+    Map<String, Integer> mapAttend = new HashMap<>();
     private DrawerLayout mDrawerLayout;
 
-    //events test
-    //private ListView eventList;
-    //private ArrayList<String> events = new ArrayList<>();
-
-//    //Home menu options
-//    private Button btnAddEvents;
-//    private Button btnExploreEvents;
-//    private Button btnUserEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        onRestart();
         // TOOLBAR & NAV DRAWER
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,23 +67,15 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_menuicon);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
-//        //Home Menu
-//        btnAddEvents = (Button) findViewById(R.id.AddEvents);
-//        btnExploreEvents = (Button) findViewById(R.id.ExploreEvents);
-//        btnUserEvents = (Button) findViewById(R.id.UserEvents);
-//
-//        //events
-//       // eventList = (ListView) findViewById(R.id.EventList);
-//        btnSignOut = (Button) findViewById(R.id.signOut);
-
         //Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        myRef = mFirebaseDatabase.getReference().child("events");
         mAuth = FirebaseAuth.getInstance();
 
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,events);
+        myListView = (ListView) findViewById(R.id.ListEvent);
+        final MainActivity.CustomAdapter myArrayAdapter = new MainActivity.CustomAdapter();
+        myListView.setAdapter(myArrayAdapter);
 
-        // eventList.setAdapter(arrayAdapter);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -147,41 +144,99 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        btnExploreEvents.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-//                startActivity(exploreEvents);
-//            }
-//        });
-//
-//        btnSignOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mAuth.signOut();
-//                toastMessage("Signing out...");
-//                Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(backToLogin);
-//                finish();
-//            }
-//        });
-//
-//        btnAddEvents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
-//                startActivity(intentAddEvent);
-//            }
-//        });
-//
-//        btnUserEvents.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
-//                startActivity(intentUserEvent);
-//            }
-//        });
+    //All Events
+        ChildEventListener childEventListener = myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String title = dataSnapshot.child("title").getValue(String.class);
+                String desc = dataSnapshot.child("description").getValue(String.class);
+                String location = dataSnapshot.child("location information").getValue(String.class);
+                String date = dataSnapshot.child("start date").getValue(String.class);
+                String contact = dataSnapshot.child("email").getValue(String.class);
+                int attendees = dataSnapshot.child("attendees").getValue(Integer.class);
+                int id = dataSnapshot.child("id").getValue(Integer.class);
+                myArrayList.add(title);
+                mapDesc.put(title, desc);
+                mapLoca.put(title, location);
+                mapDate.put(title, date);
+                mapCont.put(title, contact);
+                mapAttend.put(title, attendees);
+                mapId.put(title, id);
+                myArrayAdapter.notifyDataSetChanged();
+                Log.d("TAG", title + "");
 
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, EventPage.class);
+                intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    class CustomAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+
+            return myArrayList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.custom_layout, null);
+            ImageView icon = (ImageView) view.findViewById(R.id.imageView);
+            TextView myTitle = (TextView) view.findViewById(R.id.titleView);
+            TextView myDate = (TextView) view.findViewById(R.id.dateView);
+            TextView myAttendees = (TextView) view.findViewById(R.id.CountView);
+            Log.d("TAG", myArrayList.size() + "");
+            Log.d("TAG", myArrayList.get(position) + "");
+            myTitle.setText(myArrayList.get(position));
+            myDate.setText(mapDate.get(myArrayList.get(position)));
+            myAttendees.setText(mapAttend.get(myArrayList.get(position))+"");
+
+            return view;
+        }
     }
 
     // NAV BAR BUTTON FUNCTIONALITY
@@ -206,6 +261,13 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
     }
 
     private void toastMessage(String message) {

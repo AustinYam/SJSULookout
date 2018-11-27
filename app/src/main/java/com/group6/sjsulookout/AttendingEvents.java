@@ -73,12 +73,13 @@ public class AttendingEvents extends AppCompatActivity {
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
-
+                String startDate = dataSnapshot.child("start date").getValue(String.class);
                 String id = dataSnapshot.child("event_id").getValue(Integer.class) +"";
                 mEventTitle = title;
                 myArrayList.add(mEventTitle);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
+                mapDate.put(title,startDate);
                 mapId.put(title,id);
                 listCounter+=1;
                 Log.d("TAG", title + "");
@@ -192,6 +193,7 @@ public class AttendingEvents extends AppCompatActivity {
             Log.d("TAG", myArrayList.size() + "");
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
+            myDate.setText(mapDate.get(myArrayList.get(position)));
 
 
             return view;

@@ -66,7 +66,7 @@
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/CountView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView2"
