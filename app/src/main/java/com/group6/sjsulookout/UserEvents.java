@@ -99,12 +99,12 @@ public class UserEvents extends AppCompatActivity {
                         Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
                         startActivity(attendEvents);
                         return true;
-                    case R.id.ExploreEvents:
+                    case R.id.MyHome:
                         item.setChecked(true); // set item as selected to persist highlight
                         mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
-                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-                        startActivity(exploreEvents);
+                        Intent myHome = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(myHome);
                         return true;
                     case R.id.UserEvents:
                         item.setChecked(true); // set item as selected to persist highlight

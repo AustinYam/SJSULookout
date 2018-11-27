@@ -47,8 +47,6 @@ public class AttendingEvents extends AppCompatActivity {
     public String mEventTitle;
     ListView mListView;
 
-    String[] names = {"ONE","TWO"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,12 +126,12 @@ public class AttendingEvents extends AppCompatActivity {
                         Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
                         startActivity(attendEvents);
                         return true;
-                    case R.id.ExploreEvents:
+                    case R.id.MyHome:
                         item.setChecked(true); // set item as selected to persist highlight
                         mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
-                        Intent exploreEvents = new Intent(getApplicationContext(), AllEvents.class);
-                        startActivity(exploreEvents);
+                        Intent myHome = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(myHome);
                         return true;
                     case R.id.UserEvents:
                         item.setChecked(true); // set item as selected to persist highlight
@@ -194,7 +192,6 @@ public class AttendingEvents extends AppCompatActivity {
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapDate.get(myArrayList.get(position)));
-
 
             return view;
         }

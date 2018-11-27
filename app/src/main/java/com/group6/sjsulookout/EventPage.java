@@ -3,9 +3,15 @@ package com.group6.sjsulookout;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,13 +30,16 @@ import java.util.UUID;
 
 public class EventPage extends AppCompatActivity {
 
+    private DrawerLayout mDrawerLayout;
     private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mAuth;
     private TextView eventTitle, eventLocation, eventDate, eventDesc, eventContact;
     private Button eventButton;
     private DatabaseReference myEventRef;
     private DatabaseReference myUserRef;
     private int newCount;
     private boolean isAdded;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +66,7 @@ public class EventPage extends AppCompatActivity {
         myUserRef = mFirebaseDatabase.getReference().child("Users");
         myEventRef = mFirebaseDatabase.getReference().child("events");
         DatabaseReference mySpecUserRef = myUserRef.child(user_id);
-        final DatabaseReference attendUserEventRef = mySpecUserRef.child("Attending Events");
+        final DatabaseReference attendUserEventRef = mySpecUserRef.child("AttendingEvents");
         final DatabaseReference eventsRef = myEventRef.child("event"+eventId);
 
         final DatabaseReference userEventIdRef = attendUserEventRef.child("event"+eventId);
@@ -126,7 +135,67 @@ public class EventPage extends AppCompatActivity {
             }
         });
 
+        // TOOLBAR & NAV DRAWER
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_menuicon);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        // NAV DRAWER ITEMS - CLICK LISTENER
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.attendingEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
+                        startActivity(attendEvents);
+                        return true;
+                    case R.id.MyHome:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent myHome = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(myHome);
+                        return true;
+                    case R.id.UserEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle user events click
+                        Intent intentUserEvent = new Intent(getApplicationContext(), UserEvents.class);
+                        startActivity(intentUserEvent);
+                        return true;
+                    case R.id.AddEvents:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle add event click
+                        Intent intentAddEvent = new Intent(getApplicationContext(), AddEvent.class);
+                        startActivity(intentAddEvent);
+                        return true;
+                    case R.id.signOut:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle logout click
+                        mAuth.signOut();
+                        toastMessage("Signing out...");
+                        Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(backToLogin);
+                        finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+
     }
+
 
     public void refreshActivity() {
         Intent i = new Intent(this, MainActivity.class);
@@ -148,6 +217,17 @@ public class EventPage extends AppCompatActivity {
         super.onRestart();
         //When BACK BUTTON is pressed, the activity on the stack is restarted
         //Do what you want on the refresh procedure here
+    }
+
+    // NAV BAR BUTTON FUNCTIONALITY
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void toastMessage(String message){
