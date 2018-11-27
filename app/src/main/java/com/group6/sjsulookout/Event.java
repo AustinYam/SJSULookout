@@ -15,6 +15,10 @@ public class Event {
     private String phone;
 
 
+    public Event(){
+        super();
+    }
+
     public Event(String title, String desc, String location, String startDate, String endDate, String startTime, String endTime, int id, String type, String contact, String email, String phone) {
         this.title = title;
         this.desc = desc;
