@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,7 +38,9 @@ public class EventPage extends AppCompatActivity {
         final String eventLoca = getIntent().getStringExtra("EventLocation");
         final String eventDate = getIntent().getStringExtra("EventDate");
         final String eventContact = getIntent().getStringExtra("EventContact");
+        final String eventCount = getIntent().getStringExtra("EventCount");
         final int eventId = getIntent().getIntExtra("EventId", 0);
+        final int attendees = Integer.parseInt(eventCount);
 
 
         //Firebase
@@ -62,6 +65,10 @@ public class EventPage extends AppCompatActivity {
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference evRef = mFirebaseDatabase.getReference().child("events");
+                DatabaseReference idEventRef = evRef.child("event"+eventId);
+                DatabaseReference attendRef = idEventRef.child("attendees");
+
                 DatabaseReference userRef = myRef.child(user_id);
                 DatabaseReference eventRef = userRef.child("AttendingEvents");
 
@@ -72,6 +79,7 @@ public class EventPage extends AppCompatActivity {
                 DatabaseReference eventDateRef = myEventChild.child("date");
                 DatabaseReference eventDescRef = myEventChild.child("description");
                 DatabaseReference eventContactRef = myEventChild.child("contact");
+                DatabaseReference eventAttendeeRef = myEventChild.child("attendees");
 
                 eventIdRef.setValue(eventId);
                 eventTitleRef.setValue(eventTitle);
@@ -79,6 +87,11 @@ public class EventPage extends AppCompatActivity {
                 eventDateRef.setValue(eventDate);
                 eventDescRef.setValue(eventDesc);
                 eventContactRef.setValue(eventContact);
+                eventAttendeeRef.setValue(eventCount);
+                int newCount = attendees +1;
+                attendRef.setValue(newCount);
+                Log.d("TAG", newCount+"");
+
 
 
                 toastMessage("Attending Event: " + eventTitle);
