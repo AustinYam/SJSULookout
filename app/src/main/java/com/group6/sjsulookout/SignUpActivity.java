@@ -55,6 +55,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         if(!emailEnd.equals("@sjsu.edu")){
             editTextEmail.setError("SJSU Email is required");
             editTextEmail.requestFocus();
+            return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){

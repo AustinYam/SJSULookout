@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 mapAttend.put(title, attendees);
                 mapId.put(title, id);
                 myArrayAdapter.notifyDataSetChanged();
-                Log.d("TAG", title + "");
-
             }
 
             @Override

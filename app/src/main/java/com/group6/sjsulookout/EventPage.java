@@ -27,8 +27,10 @@ public class EventPage extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private TextView eventTitle, eventLocation, eventDate, eventDesc, eventContact;
     private Button eventButton;
-    private DatabaseReference myRef;
+    private DatabaseReference myEventRef;
+    private DatabaseReference myUserRef;
     private int newCount;
+    private boolean isAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,32 @@ public class EventPage extends AppCompatActivity {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String user_id = ""+user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference().child("Users");
+
+        //QUERIE
+        myUserRef = mFirebaseDatabase.getReference().child("Users");
+        myEventRef = mFirebaseDatabase.getReference().child("events");
+        DatabaseReference mySpecUserRef = myUserRef.child(user_id);
+        final DatabaseReference attendUserEventRef = mySpecUserRef.child("Attending Events");
+        final DatabaseReference eventsRef = myEventRef.child("event"+eventId);
+
+        final DatabaseReference userEventIdRef = attendUserEventRef.child("event"+eventId);
+        userEventIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    isAdded = true;
+                }else{
+                    isAdded = false;
+                    //Add to event Attendees
+                    newCount +=1;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         TextView title = (TextView) findViewById(R.id.TitleView);
         TextView location = (TextView) findViewById(R.id.LocationView);
@@ -65,51 +92,37 @@ public class EventPage extends AppCompatActivity {
         date.setText(eventDate);
         contact.setText(eventContact);
 
+
+
         addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference evRef = mFirebaseDatabase.getReference().child("events");
-                DatabaseReference idEventRef = evRef.child("event"+eventId);
-                DatabaseReference attendRef = idEventRef.child("attendees");
+                if(isAdded == false){
+                    DatabaseReference newAttendeesRef = eventsRef.child("attendees");
+                    newAttendeesRef.setValue(newCount);
+                    //Create user event
+                    DatabaseReference userEventRef = attendUserEventRef.child("event"+eventId);
+                    DatabaseReference idRef = userEventRef.child("id");
+                    DatabaseReference titleRef = userEventRef.child("title");
+                    DatabaseReference locationRef = userEventRef.child("location");
+                    DatabaseReference dateRef = userEventRef.child("start date");
+                    DatabaseReference attendeeRef = userEventRef.child("attendees");
+                    DatabaseReference contactRef = userEventRef.child("contact");
+                    DatabaseReference descRef = userEventRef.child("description");
+                    idRef.setValue(eventId);
+                    titleRef.setValue(eventTitle);
+                    locationRef.setValue(eventLoca);
+                    dateRef.setValue(eventDate);
+                    attendeeRef.setValue(attendees);
+                    contactRef.setValue(eventContact);
+                    descRef.setValue(eventDesc);
 
-                DatabaseReference userRef = myRef.child(user_id);
-                DatabaseReference eventRef = userRef.child("AttendingEvents");
+                    toastMessage("Successfully added Event: " + eventTitle);
+                }else{
+                    toastMessage("Event Already Added");
+                }
 
-                DatabaseReference myEventChild = eventRef.child("event"+eventId);
-                DatabaseReference eventIdRef = myEventChild.child("event_id");
-                DatabaseReference eventTitleRef = myEventChild.child("title");
-                DatabaseReference eventLocationRef = myEventChild.child("location");
-                DatabaseReference eventDateRef = myEventChild.child("start date");
-                DatabaseReference eventDescRef = myEventChild.child("description");
-                DatabaseReference eventContactRef = myEventChild.child("contact");
-                DatabaseReference eventAttendeeRef = myEventChild.child("attendees");
 
-                eventIdRef.setValue(eventId);
-                eventTitleRef.setValue(eventTitle);
-                eventLocationRef.setValue(eventLoca);
-                eventDateRef.setValue(eventDate);
-                eventDescRef.setValue(eventDesc);
-                eventContactRef.setValue(eventContact);
-                eventAttendeeRef.setValue(eventCount);
-
-                myEventChild.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("event"+eventId)){
-                            int newCount = attendees +1;
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                attendRef.setValue(newCount);
-                Log.d("TAG", newCount+"");
-
-                toastMessage("Attending Event: " + eventTitle);
             }
         });
 
