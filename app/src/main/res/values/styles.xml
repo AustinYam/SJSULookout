@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/grey_white</item>
+        <item name="actionMenuTextColor">@color/grey_white</item>
+        <item name="android:background">@color/dark_grey</item>
+    </style>
+
+    <style name="NavDrawerStyle" parent="Theme.AppCompat">
+        <item name="android:background">@color/dark_grey</item>
+        <item name="android:textColorPrimary">@color/grey_white</item>
+    </style>
+
 </resources>
