@@ -13,16 +13,6 @@
     <!--Frame Layout-->
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:theme="@style/NavDrawerStyle"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -138,7 +128,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:theme="@style/NavDrawerStyle"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_view" />
 
 
     <!--Navigation View-->
