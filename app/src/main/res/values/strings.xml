@@ -8,7 +8,10 @@
     <string name="signout">Sign Out</string>
     <string name="title">Title</string>
     <string name="place">Location</string>
-    <string name="time">Date and Time</string>
+    <string name="startdate">Start Date</string>
+    <string name="enddate">End Date</string>
+    <string name="starttime">Start Time</string>
+    <string name="endtime">End Time</string>
     <string name="contents">Type to add content...</string>
     <string name="add_event">Add Event</string>
     <string name="name">Name</string>
