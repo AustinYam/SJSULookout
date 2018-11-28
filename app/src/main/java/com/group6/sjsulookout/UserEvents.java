@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -145,6 +147,10 @@ public class UserEvents extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                TextView character_speaking = findViewById(R.id.NameView);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getEmail();
+                character_speaking.setText(uid);
                 return true;
         }
         return super.onOptionsItemSelected(item);
