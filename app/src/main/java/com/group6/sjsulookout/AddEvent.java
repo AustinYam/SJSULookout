@@ -91,7 +91,7 @@ public class AddEvent extends AppCompatActivity {
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+                month = month + 1;
                 String date = month + "/" + dayOfMonth + "/" + year;
                 mDisplayStartDate.setText(date);
 
@@ -101,7 +101,7 @@ public class AddEvent extends AppCompatActivity {
         mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+                month = month + 1;
                 String date = month + "/" + dayOfMonth + "/" + year;
                 mDisplayEndDate.setText(date);
 
