@@ -12,12 +12,12 @@
     <LinearLayout
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
 
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,11 +31,11 @@
                 android:id="@+id/lEmail"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginStart="62dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@color/white"
                 android:ems="10"
 
@@ -67,11 +67,11 @@
                 android:id="@+id/lPassword"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginStart="62dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
                 android:background="@color/white"
                 android:ems="10"
                 android:gravity="center"
@@ -98,11 +98,11 @@
             android:id="@+id/signIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
             android:background="@color/golden_yellow"
             android:text="@string/login"
             android:textSize="18sp"
@@ -132,8 +132,8 @@
                 android:id="@+id/tSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="7dp"
                 android:layout_weight="1"
                 android:clickable="true"
@@ -145,7 +145,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/signIn" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_forgot_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tSignUp"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <Button
+                android:id="@+id/btn_forgot_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text="Forgot your password?"
+                android:textAllCaps="false"
+                android:textColor="@android:color/holo_blue_dark" />
+        </LinearLayout>
+
     </LinearLayout>
+
 
     <ImageView
         android:id="@+id/imageView5"
