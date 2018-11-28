@@ -197,9 +197,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("Attending",false);
                 startActivity(intent);
             }
         });
+//        TextView character_speaking = findViewById(R.id.NameView);
+//        character_speaking.setText("a text string that was large enough for two lines");
 
     }
 
@@ -243,6 +246,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                TextView character_speaking = findViewById(R.id.NameView);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getEmail();
+                character_speaking.setText(uid);
                 return true;
         }
         return super.onOptionsItemSelected(item);

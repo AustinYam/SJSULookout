@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +44,8 @@ public class AttendingEvents extends AppCompatActivity {
     Map<String,String> mapLoca = new HashMap<>();
     Map<String,String> mapDate = new HashMap<>();
     Map<String,String> mapCont = new HashMap<>();
-    Map<String,String> mapId = new HashMap<>();
+    Map<String,Integer> mapCount = new HashMap<>();
+    Map<String,Integer> mapId = new HashMap<>();
     ArrayList<String> myArrayList = new ArrayList<>();
     public String mEventTitle;
     ListView mListView;
@@ -73,12 +75,15 @@ public class AttendingEvents extends AppCompatActivity {
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
-                String id = dataSnapshot.child("event_id").getValue(Integer.class) +"";
+                int id = dataSnapshot.child("id").getValue(Integer.class);
+                int eventCount = dataSnapshot.child("attendees").getValue(Integer.class);
+
                 mEventTitle = title;
                 myArrayList.add(mEventTitle);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
                 mapDate.put(title,startDate);
+                mapCount.put(title,eventCount);
                 mapId.put(title,id);
                 listCounter+=1;
                 Log.d("TAG", title + "");
@@ -116,6 +121,8 @@ public class AttendingEvents extends AppCompatActivity {
                 intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
+                intent.putExtra("Attending", true);
                 startActivity(intent);
             }
         });
@@ -203,10 +210,10 @@ public class AttendingEvents extends AppCompatActivity {
             ImageView icon = (ImageView) view.findViewById(R.id.imageView);
             TextView myTitle = (TextView) view.findViewById(R.id.titleView);
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
-            Log.d("TAG", myArrayList.size() + "");
-            Log.d("TAG", myArrayList.get(position) + "");
+            TextView myCount = (TextView) view.findViewById(R.id.CountView);
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapDate.get(myArrayList.get(position)));
+            myCount.setText(mapCount.get(myArrayList.get(position))+"");
 
             return view;
         }

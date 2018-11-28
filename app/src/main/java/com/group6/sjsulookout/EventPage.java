@@ -53,7 +53,9 @@ public class EventPage extends AppCompatActivity {
         final String eventDate = getIntent().getStringExtra("EventDate");
         final String eventContact = getIntent().getStringExtra("EventContact");
         final String eventCount = getIntent().getStringExtra("EventCount");
+        boolean attendingEvent = getIntent().getExtras().getBoolean("Attending");
         final int eventId = getIntent().getIntExtra("EventId", 0);
+        Log.d("TAG", eventId+"");
         final int attendees = Integer.parseInt(eventCount);
         newCount = attendees;
 
@@ -101,40 +103,59 @@ public class EventPage extends AppCompatActivity {
         date.setText(eventDate);
         contact.setText(eventContact);
 
+        if(attendingEvent == false) {
+            addEvent.setText("Attend Event");
+            addEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isAdded == false) {
+                        DatabaseReference newAttendeesRef = eventsRef.child("attendees");
+                        newAttendeesRef.setValue(newCount);
+                        //Create user event
+                        DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
+                        DatabaseReference idRef = userEventRef.child("id");
+                        DatabaseReference titleRef = userEventRef.child("title");
+                        DatabaseReference locationRef = userEventRef.child("location");
+                        DatabaseReference dateRef = userEventRef.child("start date");
+                        DatabaseReference attendeeRef = userEventRef.child("attendees");
+                        DatabaseReference contactRef = userEventRef.child("contact");
+                        DatabaseReference descRef = userEventRef.child("description");
+
+                        idRef.setValue(eventId);
+                        titleRef.setValue(eventTitle);
+                        locationRef.setValue(eventLoca);
+                        dateRef.setValue(eventDate);
+                        attendeeRef.setValue(newCount);
+                        contactRef.setValue(eventContact);
+                        descRef.setValue(eventDesc);
+
+                        toastMessage("Successfully added Event: " + eventTitle);
+                    } else {
+                        toastMessage("Event Already Added");
+                    }
 
 
-        addEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isAdded == false){
-                    DatabaseReference newAttendeesRef = eventsRef.child("attendees");
-                    newAttendeesRef.setValue(newCount);
-                    //Create user event
-                    DatabaseReference userEventRef = attendUserEventRef.child("event"+eventId);
-                    DatabaseReference idRef = userEventRef.child("id");
-                    DatabaseReference titleRef = userEventRef.child("title");
-                    DatabaseReference locationRef = userEventRef.child("location");
-                    DatabaseReference dateRef = userEventRef.child("start date");
-                    DatabaseReference attendeeRef = userEventRef.child("attendees");
-                    DatabaseReference contactRef = userEventRef.child("contact");
-                    DatabaseReference descRef = userEventRef.child("description");
-                    idRef.setValue(eventId);
-                    titleRef.setValue(eventTitle);
-                    locationRef.setValue(eventLoca);
-                    dateRef.setValue(eventDate);
-                    attendeeRef.setValue(attendees);
-                    contactRef.setValue(eventContact);
-                    descRef.setValue(eventDesc);
-
-                    toastMessage("Successfully added Event: " + eventTitle);
-                }else{
-                    toastMessage("Event Already Added");
                 }
+            });
+        }else{
+            addEvent.setText("Leave Event");
+            addEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        newCount -= 1;
+                        DatabaseReference newAttendeesRef = eventsRef.child("attendees");
+
+                        newAttendeesRef.setValue(newCount);
+                        //Create user event
+                        DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
+                        userEventRef.setValue(null);
 
 
-            }
-        });
+                        toastMessage("Successfully removed Event: " + eventTitle);
 
+                }
+            });
+        }
         // TOOLBAR & NAV DRAWER
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
