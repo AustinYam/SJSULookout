@@ -1,6 +1,7 @@
 package com.group6.sjsulookout;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +47,8 @@ public class AddEvent extends AppCompatActivity {
     private static final String TAG = "AddEvent";
     private TextView mDisplayStartDate;
     private TextView mDisplayEndDate;
+    private TextView mDisplayStartTime;
+    private TextView mDisplayEndTime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
 
@@ -56,6 +60,8 @@ public class AddEvent extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         mDisplayStartDate = (TextView) findViewById(R.id.StartDate);
         mDisplayEndDate = (TextView) findViewById(R.id.EndDate);
+        mDisplayStartTime = (TextView) findViewById(R.id.StartTime);
+        mDisplayStartTime = (TextView) findViewById(R.id.EndTime);
 
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +113,28 @@ public class AddEvent extends AppCompatActivity {
 
             }
         };
+
+
+        mDisplayStartTime.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
+                int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(AddEvent.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        mDisplayStartTime.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
 
 
 
