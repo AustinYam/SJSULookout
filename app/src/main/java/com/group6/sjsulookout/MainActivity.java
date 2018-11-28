@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     Map<String, Integer> mapId = new HashMap<>();
     Map<String, Integer> mapAttend = new HashMap<>();
     private DrawerLayout mDrawerLayout;
+    private int id;
 
 
     @Override
@@ -154,7 +155,12 @@ public class MainActivity extends AppCompatActivity {
                 String date = dataSnapshot.child("start date").getValue(String.class);
                 String contact = dataSnapshot.child("email").getValue(String.class);
                 int attendees = dataSnapshot.child("attendees").getValue(Integer.class);
-                int id = dataSnapshot.child("id").getValue(Integer.class);
+                if(dataSnapshot.child("id").getValue(Integer.class)==null){
+
+                }else{
+                     id = dataSnapshot.child("id").getValue(Integer.class);
+                }
+
                 myArrayList.add(title);
                 mapDesc.put(title, desc);
                 mapLoca.put(title, location);
@@ -200,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("Attending",false);
+                intent.putExtra("isUserEvent", false);
                 startActivity(intent);
             }
         });

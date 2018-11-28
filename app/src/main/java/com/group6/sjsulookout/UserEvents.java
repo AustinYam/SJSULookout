@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class UserEvents extends AppCompatActivity {
 
@@ -48,7 +49,7 @@ public class UserEvents extends AppCompatActivity {
     Map<String,String> mapDate = new HashMap<>();
     Map<String,String> mapCont = new HashMap<>();
     Map<String,Integer> mapCount = new HashMap<>();
-    Map<String,Integer> mapId = new HashMap<>();
+    Map<String,String> mapId = new HashMap<>();
     public String mEventTitle;
 
 
@@ -81,7 +82,7 @@ public class UserEvents extends AppCompatActivity {
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
-               // int id = dataSnapshot.child("id").getValue(Integer.class);
+                String id = dataSnapshot.child("id").getValue(String.class);
 
                 if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
                     eventCount = 0;
@@ -95,7 +96,7 @@ public class UserEvents extends AppCompatActivity {
                 mapLoca.put(title,location);
                 mapDate.put(title,startDate);
                 mapCount.put(title,eventCount);
-               // mapId.put(title,id);
+                mapId.put(title,id);
                 Log.d("TAG", title + "");
                 customAdapter.notifyDataSetChanged();
             }
@@ -130,9 +131,10 @@ public class UserEvents extends AppCompatActivity {
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
                 intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
-               // intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("UserEventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
                 intent.putExtra("Attending", false);
+                intent.putExtra("isUserEvent", true);
                 startActivity(intent);
             }
         });

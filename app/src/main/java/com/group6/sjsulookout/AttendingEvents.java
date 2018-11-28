@@ -71,11 +71,18 @@ public class AttendingEvents extends AppCompatActivity {
         ChildEventListener childEventListener = eventRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                int id;
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
-                int id = dataSnapshot.child("id").getValue(Integer.class);
+                if(dataSnapshot.child("id").getValue(Integer.class)==null){
+
+                }else{
+                    id = dataSnapshot.child("id").getValue(Integer.class);
+                    mapId.put(title,id);
+                }
+
 
                 if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
                      eventCount = 0;
@@ -89,7 +96,7 @@ public class AttendingEvents extends AppCompatActivity {
                 mapLoca.put(title,location);
                 mapDate.put(title,startDate);
                 mapCount.put(title,eventCount);
-                mapId.put(title,id);
+
                 Log.d("TAG", title + "");
                 customAdapter.notifyDataSetChanged();
             }
