@@ -43,7 +43,6 @@
             app:layout_constraintVertical_bias="0.0" />
 
 
-
     </FrameLayout>
 
 
@@ -58,7 +57,11 @@
         app:menu="@menu/drawer_view"
         app:headerLayout="@layout/nav_header"/>
 
+
+
 </android.support.v4.widget.DrawerLayout>
+
+
 
 
 <!--<?xml version="1.0" encoding="utf-8"?>-->

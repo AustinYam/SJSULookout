@@ -197,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("Attending",false);
                 startActivity(intent);
             }
         });
