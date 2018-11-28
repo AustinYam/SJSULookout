@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("Attending",false);
+                intent.putExtra("isUserEvent", false);
                 startActivity(intent);
             }
         });
