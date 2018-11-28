@@ -12,7 +12,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +31,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserEvents extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
-    private ListView myListView;
-    private ArrayList<String> userEvents = new ArrayList<>();
+    private ListView mListView;
+    private ArrayList<String> myArrayList = new ArrayList<>();
     private DrawerLayout mDrawerLayout;
+    private int eventCount;
+    Map<String,String> mapDesc = new HashMap<>();
+    Map<String,String> mapLoca = new HashMap<>();
+    Map<String,String> mapDate = new HashMap<>();
+    Map<String,String> mapCont = new HashMap<>();
+    Map<String,Integer> mapCount = new HashMap<>();
+    Map<String,Integer> mapId = new HashMap<>();
+    public String mEventTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +69,35 @@ public class UserEvents extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("UserEvents");
         mAuth = FirebaseAuth.getInstance(); // for sign out button function
-        myListView = (ListView) findViewById(R.id.ListUserEvent);
-        final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userEvents);
-        myListView.setAdapter(myArrayAdapter);
+        mListView = (ListView) findViewById(R.id.ListUserEvent);
+
+        final UserEvents.CustomAdapter customAdapter = new UserEvents.CustomAdapter();
+        mListView.setAdapter(customAdapter);
 
         ChildEventListener childEventListener = myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String title = dataSnapshot.child("Title").getValue(String.class);
-                userEvents.add(title);
-                myArrayAdapter.notifyDataSetChanged();
-                Log.d("TAG", title + "");
+                String title = dataSnapshot.child("title").getValue(String.class);
+                String desc = dataSnapshot.child("description").getValue(String.class);
+                String location = dataSnapshot.child("location").getValue(String.class);
+                String startDate = dataSnapshot.child("start date").getValue(String.class);
+               // int id = dataSnapshot.child("id").getValue(Integer.class);
 
+                if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
+                    eventCount = 0;
+                }else {
+                    eventCount = dataSnapshot.child("attendees").getValue(Integer.class);
+                }
+
+                mEventTitle = title;
+                myArrayList.add(mEventTitle);
+                mapDesc.put(title,desc);
+                mapLoca.put(title,location);
+                mapDate.put(title,startDate);
+                mapCount.put(title,eventCount);
+               // mapId.put(title,id);
+                Log.d("TAG", title + "");
+                customAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,6 +120,23 @@ public class UserEvents extends AppCompatActivity {
 
             }
         });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(UserEvents.this, EventPage.class);
+                intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+               // intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
+                intent.putExtra("Attending", false);
+                startActivity(intent);
+            }
+        });
+
 
         // NAV DRAWER ITEMS - CLICK LISTENER
         NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
@@ -139,6 +189,38 @@ public class UserEvents extends AppCompatActivity {
         });
 
 
+    }
+
+    class CustomAdapter extends BaseAdapter {
+        @Override
+        public int getCount() {
+
+            return myArrayList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.custom_layout,null);
+            ImageView icon = (ImageView) view.findViewById(R.id.imageView);
+            TextView myTitle = (TextView) view.findViewById(R.id.titleView);
+            TextView myDate = (TextView) view.findViewById(R.id.dateView);
+            TextView myCount = (TextView) view.findViewById(R.id.CountView);
+            myTitle.setText(myArrayList.get(position));
+            myDate.setText(mapDate.get(myArrayList.get(position)));
+            myCount.setText(mapCount.get(myArrayList.get(position))+"");
+
+            return view;
+        }
     }
 
     // NAV DRAWER BUTTON FUNCTIONALITY

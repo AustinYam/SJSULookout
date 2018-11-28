@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
+    android:background="@drawable/night"
     android:fitsSystemWindows="true"
     tools:context=".AddEvent"
     tools:layout_editor_absoluteY="81dp">
@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:background="@drawable/add_event_innerbox_round"
+
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar

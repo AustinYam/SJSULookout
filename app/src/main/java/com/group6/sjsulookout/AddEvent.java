@@ -35,6 +35,8 @@ public class AddEvent extends AppCompatActivity {
     private EditText mTitle;
     private EditText mLocation;
     private EditText mDesc;
+    private EditText mStartDate, mEndDate, mStartTime, mEndTime;
+
     private int eventCounter;
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
@@ -116,29 +118,57 @@ public class AddEvent extends AppCompatActivity {
         mTitle = (EditText) findViewById(R.id.Title);
         mLocation = (EditText) findViewById(R.id.Location);
         mDesc = (EditText) findViewById(R.id.Description);
+        mStartDate = (EditText) findViewById(R.id.StartDate);
+        mEndDate = (EditText) findViewById(R.id.EndDate);
+        mStartTime = (EditText) findViewById(R.id.StartTime);
+        mEndTime = (EditText) findViewById(R.id. EndTime);
         eventCounter = 0;
 
         sendData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UUID id = UUID.randomUUID();
+                String uid = id.toString();
                 String title = mTitle.getText().toString();
                 String location = mLocation.getText().toString();
                 String desc = mDesc.getText().toString();
-                DatabaseReference myEvents = myRef.child("UserEvents");
-                DatabaseReference myEventChild = myEvents.child(""+UUID.randomUUID());
-                DatabaseReference myEventsTitle = myEventChild.child("Title");
-                DatabaseReference myEventLocation = myEventChild.child("Location");
-                DatabaseReference myEventDesc = myEventChild.child("Description");
+                String startDate = mStartDate.getText().toString();
+                String endDate = mEndDate.getText().toString();
+                String startTime = mStartTime.getText().toString();
+                String endTime = mEndTime.getText().toString();
 
+                DatabaseReference myEvents = myRef.child("UserEvents");
+                DatabaseReference myEventChild = myEvents.child(""+uid);
+                DatabaseReference myEventsTitle = myEventChild.child("title");
+                DatabaseReference myEventLocation = myEventChild.child("location");
+                DatabaseReference myEventDesc = myEventChild.child("description");
+                DatabaseReference myEventStartDate = myEventChild.child("start date");
+                DatabaseReference myEventEndDate = myEventChild.child("end date");
+                DatabaseReference myEventStartTime = myEventChild.child("start time");
+                DatabaseReference myEventEndTime = myEventChild.child("end time");
+                DatabaseReference myEventId = myEventChild.child("id");
+                DatabaseReference myEventAttendees = myEventChild.child("attendees");
+
+                myEventAttendees.setValue(1);
+                myEventId.setValue(uid);
                 myEventsTitle.setValue(title);
                 myEventLocation.setValue(location);
                 myEventDesc.setValue(desc);
+                myEventStartDate.setValue(startDate);
+                myEventEndDate.setValue(endDate);
+                myEventStartTime.setValue(startTime);
+                myEventEndTime.setValue(endTime);
 
                 toastMessage("Successfully posted: "+title);
 
                 mTitle.getText().clear();
                 mLocation.getText().clear();
                 mDesc.getText().clear();
+                mStartDate.getText().clear();
+                mEndDate.getText().clear();
+                mStartTime.getText().clear();
+                mEndTime.getText().clear();
+
 
 
             }
