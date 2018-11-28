@@ -12,32 +12,38 @@
 
     <!--Frame Layout-->
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/add_event_innerbox_round"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/BtnAddEvent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <!--TITLE INPUT-->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:theme="@style/NavDrawerStyle"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_view" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/add_event_innerbox_round"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ToolBarStyle" />
+
         <EditText
             android:id="@+id/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="120dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
 
@@ -51,16 +57,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Location" />
 
-        <!--DESCRIPTION INPUT-->
         <EditText
             android:id="@+id/Location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="200dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="@string/place"
@@ -73,16 +78,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--DATE & TIME INPUT-->
         <EditText
             android:id="@+id/Time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="160dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="@string/time"
@@ -95,22 +99,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--DESCRIPTION INPUT-->
         <EditText
             android:id="@+id/Description"
             android:layout_width="match_parent"
             android:layout_height="320dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="250dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="36dp"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:gravity="top"
             android:hint="@string/contents"
-            android:inputType="textEmailAddress"
+            android:inputType="textCapSentences|textMultiLine"
             android:padding="4dp"
             android:textColor="@color/white"
             android:textColorHint="@color/grey_white"
@@ -119,43 +122,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Title" />
 
-        <!--SUBMIT BUTTON-->
         <Button
             android:id="@+id/BtnAddEvent"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="600dp"
+
             android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
             android:background="@color/golden_yellow"
             android:text="@string/add_event"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ToolBarStyle" />
-
-    </FrameLayout>
+    </LinearLayout>
 
 
     <!--Navigation View-->
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:theme="@style/NavDrawerStyle"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view" />
 
 </android.support.v4.widget.DrawerLayout>
