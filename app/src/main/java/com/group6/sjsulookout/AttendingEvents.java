@@ -39,7 +39,7 @@ public class AttendingEvents extends AppCompatActivity {
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
-    private int listCounter = 0;
+    private int eventCount;
     Map<String,String> mapDesc = new HashMap<>();
     Map<String,String> mapLoca = new HashMap<>();
     Map<String,String> mapDate = new HashMap<>();
@@ -76,7 +76,12 @@ public class AttendingEvents extends AppCompatActivity {
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
                 int id = dataSnapshot.child("id").getValue(Integer.class);
-                int eventCount = dataSnapshot.child("attendees").getValue(Integer.class);
+
+                if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
+                     eventCount = 0;
+                }else {
+                     eventCount = dataSnapshot.child("attendees").getValue(Integer.class);
+                }
 
                 mEventTitle = title;
                 myArrayList.add(mEventTitle);
@@ -85,7 +90,6 @@ public class AttendingEvents extends AppCompatActivity {
                 mapDate.put(title,startDate);
                 mapCount.put(title,eventCount);
                 mapId.put(title,id);
-                listCounter+=1;
                 Log.d("TAG", title + "");
                 customAdapter.notifyDataSetChanged();
             }
@@ -213,7 +217,7 @@ public class AttendingEvents extends AppCompatActivity {
             TextView myCount = (TextView) view.findViewById(R.id.CountView);
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapDate.get(myArrayList.get(position)));
-            myCount.setText(mapCount.get(myArrayList.get(position))+"");
+            myCount.setText("");
 
             return view;
         }
