@@ -11,6 +11,7 @@
     <color name="golden_yellow">#FFD250</color>
     <color name="white">#FFFFFF</color>
     <color name="IconBG">#28ffffff</color>
+    <color name="opacity_dark_grey">#e03d3d3d</color>
     <color name="opacity_light_grey">#b03d3d3d</color>
     <color name="opacity_lighter_grey">#853d3d3d</color>
 
