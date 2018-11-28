@@ -122,6 +122,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         android:theme="@style/NavDrawerStyle"
+        app:itemIconTint="@color/golden_yellow"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_view" />
 

@@ -226,6 +226,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/NavDrawerStyle"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/golden_yellow"
         app:menu="@menu/drawer_view" />
 
 
