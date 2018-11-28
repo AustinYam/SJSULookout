@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -141,6 +143,10 @@ public class AddEvent extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                TextView character_speaking = findViewById(R.id.NameView);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getEmail();
+                character_speaking.setText(uid);
                 return true;
         }
         return super.onOptionsItemSelected(item);

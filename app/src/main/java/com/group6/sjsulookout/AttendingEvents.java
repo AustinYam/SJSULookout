@@ -225,6 +225,10 @@ public class AttendingEvents extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                TextView character_speaking = findViewById(R.id.NameView);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getEmail();
+                character_speaking.setText(uid);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -186,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -201,8 +203,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        TextView character_speaking = findViewById(R.id.NameView);
-//        character_speaking.setText("a text string that was large enough for two lines");
 
     }
 
