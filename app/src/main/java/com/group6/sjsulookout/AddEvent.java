@@ -1,6 +1,10 @@
 package com.group6.sjsulookout;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.DatePicker;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,14 +38,75 @@ public class AddEvent extends AppCompatActivity {
     private int eventCounter;
     private FirebaseAuth mAuth;
     private DrawerLayout mDrawerLayout;
-
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
+    private static final String TAG = "AddEvent";
+    private TextView mDisplayStartDate;
+    private TextView mDisplayEndDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private DatePickerDialog.OnDateSetListener mDateSetListener1;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+        mDisplayStartDate = (TextView) findViewById(R.id.StartDate);
+        mDisplayEndDate = (TextView) findViewById(R.id.EndDate);
+
+
+        mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                int year = cal.get(java.util.Calendar.YEAR);
+                int month = cal.get(java.util.Calendar.MONTH);
+                int day = cal.get(java.util.Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(AddEvent.this, android.R.style.Theme_Holo_Light_Dialog,mDateSetListener,year, month,day);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        mDisplayEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+                int year = cal.get(java.util.Calendar.YEAR);
+                int month = cal.get(java.util.Calendar.MONTH);
+                int day = cal.get(java.util.Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(AddEvent.this, android.R.style.Theme_Holo_Light_Dialog,mDateSetListener1,year, month,day);
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                String date = month + "/" + dayOfMonth + "/" + year;
+                mDisplayStartDate.setText(date);
+
+            }
+        };
+
+        mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                String date = month + "/" + dayOfMonth + "/" + year;
+                mDisplayEndDate.setText(date);
+
+            }
+        };
+
+
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -155,4 +222,6 @@ public class AddEvent extends AppCompatActivity {
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
+
 }
+
