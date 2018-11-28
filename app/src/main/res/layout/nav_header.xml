@@ -12,7 +12,7 @@
         android:id="@+id/NameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Firstname Lastname"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:text="FirstName LastName"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>
