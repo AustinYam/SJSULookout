@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
+    android:background="@drawable/night"
     android:fitsSystemWindows="true"
     tools:context=".AddEvent"
     tools:layout_editor_absoluteY="81dp">
@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:background="@drawable/add_event_innerbox_round"
+
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -78,6 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="16dp"
@@ -86,7 +89,7 @@
                 android:background="@drawable/edit_text_border"
                 android:ems="10"
                 android:hint="@string/startdate"
-                android:inputType="textEmailAddress"
+                android:inputType="date"
                 android:padding="4dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/grey_white"
@@ -100,6 +103,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="4dp"
@@ -108,7 +114,7 @@
                 android:background="@drawable/edit_text_border"
                 android:ems="10"
                 android:hint="@string/enddate"
-                android:inputType="textEmailAddress"
+                android:inputType="date"
                 android:padding="4dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/grey_white"
