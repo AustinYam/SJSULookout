@@ -151,7 +151,10 @@ public class EventPage extends AppCompatActivity {
                         DatabaseReference idRef = userEventRef.child("id");
                         DatabaseReference titleRef = userEventRef.child("title");
                         DatabaseReference locationRef = userEventRef.child("location");
-                        DatabaseReference dateRef = userEventRef.child("start date");
+                        DatabaseReference startDateRef = userEventRef.child("start date");
+                        DatabaseReference endDateRef = userEventRef.child("end date");
+                        DatabaseReference startTimeRef = userEventRef.child("start time");
+                        DatabaseReference endTimeRef = userEventRef.child("start date");
                         DatabaseReference attendeeRef = userEventRef.child("attendees");
                         DatabaseReference contactRef = userEventRef.child("contact");
                         DatabaseReference descRef = userEventRef.child("description");
@@ -159,7 +162,10 @@ public class EventPage extends AppCompatActivity {
                         idRef.setValue(eventId);
                         titleRef.setValue(eventTitle);
                         locationRef.setValue(eventLoca);
-                        dateRef.setValue(eventDate);
+                        startDateRef.setValue(eventStartDate);
+                        endDateRef.setValue(eventEndDate);
+                        startTimeRef.setValue(eventStartTime);
+                        endTimeRef.setValue(eventEndTime);
                         attendeeRef.setValue(newCount);
                         contactRef.setValue(eventContact);
                         descRef.setValue(eventDesc);

@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -52,6 +53,7 @@ public class AttendingEvents extends AppCompatActivity {
     ArrayList<String> myArrayList = new ArrayList<>();
     public String mEventTitle;
     ListView mListView;
+    int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class AttendingEvents extends AppCompatActivity {
         final CustomAdapter customAdapter = new CustomAdapter();
         mListView.setAdapter(customAdapter);
 
+        //Display Attending Events
         ChildEventListener childEventListener = eventRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -126,6 +129,8 @@ public class AttendingEvents extends AppCompatActivity {
 
             }
         });
+
+
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -232,6 +237,10 @@ public class AttendingEvents extends AppCompatActivity {
             TextView myCount = (TextView) view.findViewById(R.id.CountView);
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapStartDate.get(myArrayList.get(position)));
+
+            DatabaseReference myDatabaseRef = mFirebaseDatabase.getReference().child("events");
+            DatabaseReference eventsIdRef = myDatabaseRef.child("event"+mapId.get(myArrayList.get(position)));
+            DatabaseReference myCountRef = eventsIdRef.child("attendees");
             myCount.setText("");
 
             return view;
