@@ -51,25 +51,33 @@ public class EventPage extends AppCompatActivity {
         final String eventTitle = getIntent().getStringExtra("EventTitle");
         final String eventDesc = getIntent().getStringExtra("EventDesc");
         final String eventLoca = getIntent().getStringExtra("EventLocation");
-        final String eventDate = getIntent().getStringExtra("EventDate");
+        final String eventStartDate = getIntent().getStringExtra("EventStartDate");
+        final String eventEndDate = getIntent().getStringExtra("EventEndDate");
+        final String eventStartTime = getIntent().getStringExtra("EventEndDate");
+        final String eventEndTime = getIntent().getStringExtra("EventEndDate");
         final String eventContact = getIntent().getStringExtra("EventContact");
         final String eventCount = getIntent().getStringExtra("EventCount");
         boolean attendingEvent = getIntent().getExtras().getBoolean("Attending");
         final boolean isUserEvent = getIntent().getExtras().getBoolean("isUserEvent");
+
         final String eventId = getIntent().getStringExtra("EventId");
+        final String userUid = getIntent().getStringExtra("UserId");
         Log.d("TAG", eventId+"");
         final int attendees = Integer.parseInt(eventCount);
         newCount = attendees;
 
         //Firebase
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String user_id = ""+user.getUid();
+        final String user_id = user.getUid();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        //QUERIE
+        //QUERIES
         myUserRef = mFirebaseDatabase.getReference().child("Users");
         myEventRef = mFirebaseDatabase.getReference().child("events");
         DatabaseReference mySpecUserRef = myUserRef.child(user_id);
+        final DatabaseReference userEventsRef = mFirebaseDatabase.getReference().child("UserEvents");
+
+
         final DatabaseReference attendUserEventRef = mySpecUserRef.child("AttendingEvents");
         final DatabaseReference eventsRef = myEventRef.child("event"+eventId);
 
@@ -92,6 +100,7 @@ public class EventPage extends AppCompatActivity {
             }
         });
 
+        //WHAT YOU SEE ON EVENT PAGE
         TextView title = (TextView) findViewById(R.id.TitleView);
         TextView location = (TextView) findViewById(R.id.LocationView);
         TextView date = (TextView) findViewById(R.id.DateView);
@@ -102,10 +111,24 @@ public class EventPage extends AppCompatActivity {
         title.setText(eventTitle);
         desc.setText(eventDesc);
         location.setText(eventLoca);
-        date.setText(eventDate);
+        date.setText(eventStartDate);
         contact.setText(eventContact);
 
-        if(attendingEvent == false) {
+        //GET DATA FOR USER ID
+        if(user_id.equals(userUid)){
+            addEvent.setText("Remove Event");
+            addEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatabaseReference myUserEventRef = userEventsRef.child(eventId);
+                    myUserEventRef.setValue(null);
+                    toastMessage("Successfully removed Event");
+                    Intent intent = new Intent(EventPage.this,UserEvents.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else if(attendingEvent == false) {
             addEvent.setText("Attend Event");
             addEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,7 +136,7 @@ public class EventPage extends AppCompatActivity {
                     if (isAdded == false) {
 
                         if(isUserEvent){
-                            DatabaseReference userEventsRef = mFirebaseDatabase.getReference().child("UserEvents");
+
                             DatabaseReference userEventIdRef = userEventsRef.child(eventId);
                             DatabaseReference userEventAttendees = userEventIdRef.child("attendees");
 
@@ -149,14 +172,13 @@ public class EventPage extends AppCompatActivity {
 
                 }
             });
-        }else{
+        }else if(attendingEvent == true){
             addEvent.setText("Leave Event");
             addEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     newCount -= 1;
                     if(isUserEvent){
-                        DatabaseReference userEventsRef = mFirebaseDatabase.getReference().child("UserEvents");
                         DatabaseReference userEventIdRef = userEventsRef.child(eventId);
                         DatabaseReference userEventAttendees = userEventIdRef.child("attendees");
 

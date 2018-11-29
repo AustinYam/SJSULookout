@@ -42,7 +42,10 @@ public class AttendingEvents extends AppCompatActivity {
     private int eventCount;
     Map<String,String> mapDesc = new HashMap<>();
     Map<String,String> mapLoca = new HashMap<>();
-    Map<String,String> mapDate = new HashMap<>();
+    Map<String,String> mapStartDate = new HashMap<>();
+    Map<String, String> mapEndDate = new HashMap<>();
+    Map<String, String> mapStartTime = new HashMap<>();
+    Map<String, String> mapEndTime = new HashMap<>();
     Map<String,String> mapCont = new HashMap<>();
     Map<String,Integer> mapCount = new HashMap<>();
     Map<String,String> mapId = new HashMap<>();
@@ -75,6 +78,9 @@ public class AttendingEvents extends AppCompatActivity {
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location").getValue(String.class);
                 String startDate = dataSnapshot.child("start date").getValue(String.class);
+                String endDate = dataSnapshot.child("end date").getValue(String.class);
+                String startTime= dataSnapshot.child("start time").getValue(String.class);
+                String endTime = dataSnapshot.child("end time").getValue(String.class);
                 String id = dataSnapshot.child("id").getValue(String.class);
 
                 if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
@@ -88,7 +94,10 @@ public class AttendingEvents extends AppCompatActivity {
                 myArrayList.add(mEventTitle);
                 mapDesc.put(title,desc);
                 mapLoca.put(title,location);
-                mapDate.put(title,startDate);
+                mapStartDate.put(title,startDate);
+                mapEndDate.put(title,endDate);
+                mapStartTime.put(title,startTime);
+                mapEndTime.put(title,endTime);
                 mapCount.put(title,eventCount);
                 mapId.put(title,id);
 
@@ -125,7 +134,10 @@ public class AttendingEvents extends AppCompatActivity {
                 intent.putExtra("EventTitle", myArrayList.get(position));
                 intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
-                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventStartDate", mapStartDate.get(myArrayList.get(position)));
+                intent.putExtra("EventEndDate", mapEndDate.get(myArrayList.get(position)));
+                intent.putExtra("EventStartTime", mapStartTime.get(myArrayList.get(position)));
+                intent.putExtra("EventEndTime", mapEndTime.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
@@ -219,7 +231,7 @@ public class AttendingEvents extends AppCompatActivity {
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
             TextView myCount = (TextView) view.findViewById(R.id.CountView);
             myTitle.setText(myArrayList.get(position));
-            myDate.setText(mapDate.get(myArrayList.get(position)));
+            myDate.setText(mapStartDate.get(myArrayList.get(position)));
             myCount.setText("");
 
             return view;

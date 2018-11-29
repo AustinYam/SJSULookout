@@ -169,6 +169,11 @@ public class AddEvent extends AppCompatActivity {
         myRef = mFirebaseDatabase.getReference();
         mAuth = FirebaseAuth.getInstance(); // for sign out button function
 
+        //USER INFORMATION
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String userId = user.getUid();
+        final String userEmail = user.getEmail();
+
         sendData = (Button) findViewById(R.id.BtnAddEvent);
         mTitle = (EditText) findViewById(R.id.Title);
         mLocation = (EditText) findViewById(R.id.Location);
@@ -192,6 +197,7 @@ public class AddEvent extends AppCompatActivity {
                 String startTime = mStartTime.getText().toString();
                 String endTime = mEndTime.getText().toString();
 
+                //Referencing UserEvents Database
                 DatabaseReference myEvents = myRef.child("UserEvents");
                 DatabaseReference myEventChild = myEvents.child(""+uid);
                 DatabaseReference myEventsTitle = myEventChild.child("title");
@@ -203,7 +209,9 @@ public class AddEvent extends AppCompatActivity {
                 DatabaseReference myEventEndTime = myEventChild.child("end time");
                 DatabaseReference myEventId = myEventChild.child("id");
                 DatabaseReference myEventAttendees = myEventChild.child("attendees");
+                DatabaseReference myUserIdRef = myEventChild.child("user id");
 
+                //Setting event values in database
                 myEventAttendees.setValue(1);
                 myEventId.setValue(uid);
                 myEventsTitle.setValue(title);
@@ -213,6 +221,34 @@ public class AddEvent extends AppCompatActivity {
                 myEventEndDate.setValue(endDate);
                 myEventStartTime.setValue(startTime);
                 myEventEndTime.setValue(endTime);
+                myUserIdRef.setValue(userId);
+
+                //Adding own event to attending events
+                DatabaseReference myUserRef = mFirebaseDatabase.getReference().child("Users");
+                DatabaseReference mySpecUserRef = myUserRef.child(userId);
+                DatabaseReference attendUserEventRef = mySpecUserRef.child("AttendingEvents");
+                DatabaseReference userEventRef = attendUserEventRef.child("event" + uid);
+                DatabaseReference idRef = userEventRef.child("id");
+                DatabaseReference titleRef = userEventRef.child("title");
+                DatabaseReference locationRef = userEventRef.child("location");
+                DatabaseReference startDateRef = userEventRef.child("start date");
+                DatabaseReference endDateRef = userEventRef.child("end date");
+                DatabaseReference startTimeRef = userEventRef.child("start time");
+                DatabaseReference endTimeRef = userEventRef.child("end time");
+                DatabaseReference attendeeRef = userEventRef.child("attendees");
+                DatabaseReference contactRef = userEventRef.child("contact");
+                DatabaseReference descRef = userEventRef.child("description");
+
+                idRef.setValue(uid);
+                titleRef.setValue(title);
+                locationRef.setValue(location);
+                startDateRef.setValue(startDate);
+                endDateRef.setValue(endDate);
+                startTimeRef.setValue(startTime);
+                endTimeRef.setValue(endTime);
+                attendeeRef.setValue(1);
+                contactRef.setValue(userEmail);
+                descRef.setValue(desc);
 
                 toastMessage("Successfully posted: "+title);
 

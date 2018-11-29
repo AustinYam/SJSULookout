@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> myArrayList = new ArrayList<>();
     Map<String, String> mapDesc = new HashMap<>();
     Map<String, String> mapLoca = new HashMap<>();
-    Map<String, String> mapDate = new HashMap<>();
+    Map<String,String> mapStartDate = new HashMap<>();
+    Map<String, String> mapEndDate = new HashMap<>();
+    Map<String, String> mapStartTime = new HashMap<>();
+    Map<String, String> mapEndTime = new HashMap<>();
     Map<String, String> mapCont = new HashMap<>();
     Map<String, Integer> mapId = new HashMap<>();
     Map<String, Integer> mapAttend = new HashMap<>();
@@ -152,7 +155,10 @@ public class MainActivity extends AppCompatActivity {
                 String title = dataSnapshot.child("title").getValue(String.class);
                 String desc = dataSnapshot.child("description").getValue(String.class);
                 String location = dataSnapshot.child("location information").getValue(String.class);
-                String date = dataSnapshot.child("start date").getValue(String.class);
+                String startDate = dataSnapshot.child("start date").getValue(String.class);
+                String endDate = dataSnapshot.child("end date").getValue(String.class);
+                String startTime = dataSnapshot.child("start time").getValue(String.class);
+                String endTime = dataSnapshot.child("end time").getValue(String.class);
                 String contact = dataSnapshot.child("email").getValue(String.class);
                 int attendees = dataSnapshot.child("attendees").getValue(Integer.class);
                 if(dataSnapshot.child("id").getValue(Integer.class)==null){
@@ -164,7 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 myArrayList.add(title);
                 mapDesc.put(title, desc);
                 mapLoca.put(title, location);
-                mapDate.put(title, date);
+                mapStartDate.put(title,startDate);
+                mapEndDate.put(title,endDate);
+                mapStartTime.put(title,startTime);
+                mapEndTime.put(title,endTime);
                 mapCont.put(title, contact);
                 mapAttend.put(title, attendees);
                 mapId.put(title, id);
@@ -201,7 +210,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventTitle", myArrayList.get(position));
                 intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
-                intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
+                intent.putExtra("EventStartDate", mapStartDate.get(myArrayList.get(position)));
+                intent.putExtra("EventEndDate", mapEndDate.get(myArrayList.get(position)));
+                intent.putExtra("EventStartTime", mapStartTime.get(myArrayList.get(position)));
+                intent.putExtra("EventEndTime", mapEndTime.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
                 //making id a String
@@ -242,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("TAG", myArrayList.size() + "");
             Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
-            myDate.setText(mapDate.get(myArrayList.get(position)));
+            myDate.setText(mapStartDate.get(myArrayList.get(position)));
             myAttendees.setText(mapAttend.get(myArrayList.get(position))+"");
 
             return view;
