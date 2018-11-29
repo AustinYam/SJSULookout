@@ -204,7 +204,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
                 intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
-                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
+                //making id a String
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position))+"");
+
                 intent.putExtra("Attending",false);
                 intent.putExtra("isUserEvent", false);
                 startActivity(intent);

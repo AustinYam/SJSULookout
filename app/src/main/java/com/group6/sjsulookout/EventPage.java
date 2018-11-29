@@ -37,10 +37,9 @@ public class EventPage extends AppCompatActivity {
     private Button eventButton;
     private DatabaseReference myEventRef;
     private DatabaseReference myUserRef;
-    private DatabaseReference myUserEventRef;
-    private DatabaseReference checkUserEventRef;
     private int newCount;
     private boolean isAdded;
+
 
 
     @Override
@@ -58,7 +57,7 @@ public class EventPage extends AppCompatActivity {
         boolean attendingEvent = getIntent().getExtras().getBoolean("Attending");
         final boolean isUserEvent = getIntent().getExtras().getBoolean("isUserEvent");
         final String eventId = getIntent().getStringExtra("EventId");
-        final String userEventId = getIntent().getStringExtra("UserEventId");
+        Log.d("TAG", eventId+"");
         final int attendees = Integer.parseInt(eventCount);
         newCount = attendees;
 
@@ -70,60 +69,31 @@ public class EventPage extends AppCompatActivity {
         //QUERIE
         myUserRef = mFirebaseDatabase.getReference().child("Users");
         myEventRef = mFirebaseDatabase.getReference().child("events");
-        myUserEventRef = mFirebaseDatabase.getReference().child("UserEvents");
         DatabaseReference mySpecUserRef = myUserRef.child(user_id);
         final DatabaseReference attendUserEventRef = mySpecUserRef.child("AttendingEvents");
         final DatabaseReference eventsRef = myEventRef.child("event"+eventId);
 
-        if(isUserEvent) {
-            checkUserEventRef = myUserEventRef.child(userEventId);
-        }
-        if(isUserEvent){
-            checkUserEventRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if (dataSnapshot.exists()){
-                        isAdded = false;
-                        Log.d("TAG", "TRUE");
-
-                    }else{
-                        isAdded = false;
-                        Log.d("TAG", "FALSe");
-                    }
+        final DatabaseReference userEventIdRef = attendUserEventRef.child("event"+eventId);
+        userEventIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    isAdded = true;
+                }else{
+                    isAdded = false;
+                    //Add to event Attendees
+                    newCount +=1;
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-        }else {
-            final DatabaseReference userEventIdRef = attendUserEventRef.child("event" + eventId);
-            userEventIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists() && isUserEvent == false) {
-                        isAdded = true;
-                        Log.d("TAG", "WE MADE IT");
-                    } else {
-                        isAdded = false;
-                        //Add to event Attendees
-                    }
-                }
+            }
+        });
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-        Log.d("TAG",""+userEventId);
-
-
-        //Layout Viewss
         TextView title = (TextView) findViewById(R.id.TitleView);
-        final TextView location = (TextView) findViewById(R.id.LocationView);
+        TextView location = (TextView) findViewById(R.id.LocationView);
         TextView date = (TextView) findViewById(R.id.DateView);
         TextView desc = (TextView) findViewById(R.id.DescView);
         TextView contact = (TextView) findViewById(R.id.ContactView);
@@ -141,48 +111,37 @@ public class EventPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (isAdded == false) {
-                        newCount +=1;
-                        if(!isUserEvent){
+
+                        if(isUserEvent){
+                            DatabaseReference userEventsRef = mFirebaseDatabase.getReference().child("UserEvents");
+                            DatabaseReference userEventIdRef = userEventsRef.child(eventId);
+                            DatabaseReference userEventAttendees = userEventIdRef.child("attendees");
+
+                            userEventAttendees.setValue(newCount);
+                        }else {
                             DatabaseReference newAttendeesRef = eventsRef.child("attendees");
                             newAttendeesRef.setValue(newCount);
-                            //Create user event
-                            DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
-                            DatabaseReference idRef = userEventRef.child("id");
-                            DatabaseReference titleRef = userEventRef.child("title");
-                            DatabaseReference locationRef = userEventRef.child("location");
-                            DatabaseReference dateRef = userEventRef.child("start date");
-                            DatabaseReference attendeeRef = userEventRef.child("attendees");
-                            DatabaseReference contactRef = userEventRef.child("contact");
-                            DatabaseReference descRef = userEventRef.child("description");
-
-                            idRef.setValue(eventId);
-                            titleRef.setValue(eventTitle);
-                            locationRef.setValue(eventLoca);
-                            dateRef.setValue(eventDate);
-                            attendeeRef.setValue(newCount);
-                            contactRef.setValue(eventContact);
-                            descRef.setValue(eventDesc);
-
-                            toastMessage("Successfully added Event: " + eventTitle);
-                        }else{
-                            DatabaseReference userEventRef = attendUserEventRef.child(userEventId);
-                            DatabaseReference titleRef = userEventRef.child("title");
-                            DatabaseReference locationRef = userEventRef.child("location");
-                            DatabaseReference dateRef = userEventRef.child("start date");
-                            DatabaseReference attendeeRef = userEventRef.child("attendees");
-                            DatabaseReference contactRef = userEventRef.child("contact");
-                            DatabaseReference descRef = userEventRef.child("description");
-
-
-                            titleRef.setValue(eventTitle);
-                            locationRef.setValue(eventLoca);
-                            dateRef.setValue(eventDate);
-                            contactRef.setValue(eventContact);
-                            descRef.setValue(eventDesc);
-                            attendeeRef.setValue(newCount);
-                            toastMessage("Successfully added Event: " + eventTitle);
                         }
 
+                        //Create user event
+                        DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
+                        DatabaseReference idRef = userEventRef.child("id");
+                        DatabaseReference titleRef = userEventRef.child("title");
+                        DatabaseReference locationRef = userEventRef.child("location");
+                        DatabaseReference dateRef = userEventRef.child("start date");
+                        DatabaseReference attendeeRef = userEventRef.child("attendees");
+                        DatabaseReference contactRef = userEventRef.child("contact");
+                        DatabaseReference descRef = userEventRef.child("description");
+
+                        idRef.setValue(eventId);
+                        titleRef.setValue(eventTitle);
+                        locationRef.setValue(eventLoca);
+                        dateRef.setValue(eventDate);
+                        attendeeRef.setValue(newCount);
+                        contactRef.setValue(eventContact);
+                        descRef.setValue(eventDesc);
+
+                        toastMessage("Successfully added Event: " + eventTitle);
                     } else {
                         toastMessage("Event Already Added");
                     }
@@ -195,17 +154,26 @@ public class EventPage extends AppCompatActivity {
             addEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        newCount -= 1;
+                    newCount -= 1;
+                    if(isUserEvent){
+                        DatabaseReference userEventsRef = mFirebaseDatabase.getReference().child("UserEvents");
+                        DatabaseReference userEventIdRef = userEventsRef.child(eventId);
+                        DatabaseReference userEventAttendees = userEventIdRef.child("attendees");
+
+                        userEventAttendees.setValue(newCount);
+
+                    }else{
                         DatabaseReference newAttendeesRef = eventsRef.child("attendees");
-
                         newAttendeesRef.setValue(newCount);
-                        //Create user event
-                        DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
-                        userEventRef.setValue(null);
+                    }
 
-                        Intent intent = new Intent(EventPage.this, AttendingEvents.class);
-                        toastMessage("Successfully removed Event: " + eventTitle);
-                        startActivity(intent);
+                    //Create user event
+                    DatabaseReference userEventRef = attendUserEventRef.child("event" + eventId);
+                    userEventRef.setValue(null);
+
+                    Intent intent = new Intent(EventPage.this, AttendingEvents.class);
+                    toastMessage("Successfully removed Event: " + eventTitle);
+                    startActivity(intent);
 
                 }
             });

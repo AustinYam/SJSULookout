@@ -97,7 +97,6 @@ public class UserEvents extends AppCompatActivity {
                 mapDate.put(title,startDate);
                 mapCount.put(title,eventCount);
                 mapId.put(title,id);
-                Log.d("TAG", title + "");
                 customAdapter.notifyDataSetChanged();
             }
 
@@ -131,7 +130,7 @@ public class UserEvents extends AppCompatActivity {
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
                 intent.putExtra("EventDate", mapDate.get(myArrayList.get(position)));
                 intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
-                intent.putExtra("UserEventId", mapId.get(myArrayList.get(position)));
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
                 intent.putExtra("Attending", false);
                 intent.putExtra("isUserEvent", true);
