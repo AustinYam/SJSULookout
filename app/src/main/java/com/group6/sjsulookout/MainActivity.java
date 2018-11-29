@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         final MainActivity.CustomAdapter myArrayAdapter = new MainActivity.CustomAdapter();
         myListView.setAdapter(myArrayAdapter);
 
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -115,8 +115,24 @@ public class MainActivity extends AppCompatActivity {
                         item.setChecked(true); // set item as selected to persist highlight
                         mDrawerLayout.closeDrawers(); // close drawer when item is tapped
                         // Handle explore events click
-                        Intent discover = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(discover);
+                        Intent intent = new Intent(getApplicationContext(), EventPage.class);
+                        int position = new Random().nextInt(myArrayList.size());
+                        intent.putExtra("EventTitle", myArrayList.get(position));
+                        intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                        intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                        intent.putExtra("EventStartDate", mapStartDate.get(myArrayList.get(position)));
+                        intent.putExtra("EventEndDate", mapEndDate.get(myArrayList.get(position)));
+                        intent.putExtra("EventStartTime", mapStartTime.get(myArrayList.get(position)));
+                        intent.putExtra("EventEndTime", mapEndTime.get(myArrayList.get(position)));
+                        intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                        intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
+                        //making id a String
+                        intent.putExtra("EventId", mapId.get(myArrayList.get(position))+"");
+
+                        intent.putExtra("Attending",false);
+                        intent.putExtra("isUserEvent", false);
+                        
+                        startActivity(intent);
                         return true;
                     case R.id.MyHome:
                         item.setChecked(true); // set item as selected to persist highlight
