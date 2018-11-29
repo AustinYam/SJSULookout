@@ -6,10 +6,6 @@
             android:icon="@drawable/ic_menu_home"
             android:title="My Home" />
         <item
-            android:id="@+id/Discover"
-            android:icon="@drawable/ic_menu_discover"
-            android:title="Discover" />
-        <item
             android:id="@+id/UserEvents"
             android:icon="@drawable/ic_menu_user"
             android:title="@string/menu_item2" />
