@@ -11,6 +11,9 @@
         android:id="@+id/NameView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="FirstName LastName" />
+        android:background="@color/IconBG"
+        android:text="FirstName LastName"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="18sp" />
 
 </LinearLayout>
