@@ -64,6 +64,8 @@ public class AttendingEvents extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String user_id = ""+user.getUid();
+
+        //QUERIES
         myRef = mFirebaseDatabase.getReference().child("Users");
         mAuth = FirebaseAuth.getInstance(); // for sign out button function
         DatabaseReference currentRef = myRef.child(user_id);
@@ -106,8 +108,6 @@ public class AttendingEvents extends AppCompatActivity {
                 mapCont.put(title,contact);
                 mapId.put(title,id);
 
-
-                Log.d("TAG", title + "");
                 customAdapter.notifyDataSetChanged();
             }
 
@@ -149,6 +149,11 @@ public class AttendingEvents extends AppCompatActivity {
                 intent.putExtra("EventId", mapId.get(myArrayList.get(position)));
                 intent.putExtra("EventCount",mapCount.get(myArrayList.get(position))+"");
                 intent.putExtra("Attending", true);
+                if(mapId.get(myArrayList.get(position)).length() > 8){
+                    intent.putExtra("isUserEvent", true);
+                }else{
+                    intent.putExtra("isUserEvent", false);
+                }
                 startActivity(intent);
             }
         });
@@ -236,14 +241,52 @@ public class AttendingEvents extends AppCompatActivity {
             ImageView icon = (ImageView) view.findViewById(R.id.imageView);
             TextView myTitle = (TextView) view.findViewById(R.id.titleView);
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
-            TextView myCount = (TextView) view.findViewById(R.id.CountView);
+            final TextView myCount = (TextView) view.findViewById(R.id.CountView);
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapStartDate.get(myArrayList.get(position)));
 
-            DatabaseReference myDatabaseRef = mFirebaseDatabase.getReference().child("events");
-            DatabaseReference eventsIdRef = myDatabaseRef.child("event"+mapId.get(myArrayList.get(position)));
-            DatabaseReference myCountRef = eventsIdRef.child("attendees");
-            myCount.setText("");
+            if(mapId.get(myArrayList.get(position)).length() > 8){
+                DatabaseReference myDatabaseRef = mFirebaseDatabase.getReference().child("UserEvents");
+                DatabaseReference eventsIdRef = myDatabaseRef.child(mapId.get(myArrayList.get(position)));
+
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int people = dataSnapshot.child("attendees").getValue(Integer.class);
+                        counter = people;
+                        Log.d("HERE", ""+people);
+                        myCount.setText(""+people);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+                eventsIdRef.addValueEventListener(eventListener);
+                myCount.setText(""+counter);
+            }else{
+                DatabaseReference myDatabaseRef = mFirebaseDatabase.getReference().child("events");
+                DatabaseReference eventsIdRef = myDatabaseRef.child("event"+mapId.get(myArrayList.get(position)));
+
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int people = dataSnapshot.child("attendees").getValue(Integer.class);
+                        counter = people;
+                        Log.d("HERE", ""+people);
+                        myCount.setText(""+people);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+                eventsIdRef.addValueEventListener(eventListener);
+            }
+
+            myCount.setText(""+counter);
 
             return view;
         }

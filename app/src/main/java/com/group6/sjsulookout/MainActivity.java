@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                 mapCont.put(title, contact);
                 mapAttend.put(title, attendees);
                 mapId.put(title, id);
-                Log.d("TAG", "onChildAdded: "+ startDate);
                 myArrayAdapter.notifyDataSetChanged();
 
             }
