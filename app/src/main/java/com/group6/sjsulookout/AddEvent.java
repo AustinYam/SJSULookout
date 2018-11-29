@@ -32,7 +32,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.UUID;
 import java.util.Calendar;
 
+
+
 public class AddEvent extends AppCompatActivity {
+
+    EditText chooseTime;
+    TimePickerDialog timePickerDialog;
+    EditText chooseTime1;
+    TimePickerDialog timePickerDialog1;
+    String amPm;
+    String amPm1;
+
 
     private Button sendData;
     private EditText mTitle;
@@ -48,12 +58,9 @@ public class AddEvent extends AppCompatActivity {
     private static final String TAG = "AddEvent";
     private TextView mDisplayStartDate;
     private TextView mDisplayEndDate;
-    private TextView mDisplayStartTime;
-    private TextView mDisplayEndTime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
-    private TimePickerDialog.OnTimeSetListener mDateSetListener2;
-    private TimePickerDialog.OnTimeSetListener mDateSetListener3;
+
 
 
 
@@ -61,10 +68,9 @@ public class AddEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-        mDisplayStartDate = (TextView) findViewById(R.id.StartDate);
-        mDisplayEndDate = (TextView) findViewById(R.id.EndDate);
-        mDisplayStartTime = (TextView) findViewById(R.id.StartTime);
-        mDisplayStartTime = (TextView) findViewById(R.id.EndTime);
+        mDisplayStartDate = findViewById(R.id.StartDate);
+        mDisplayEndDate = findViewById(R.id.EndDate);
+
 
 
         mDisplayStartDate.setOnClickListener(new View.OnClickListener() {
@@ -81,18 +87,61 @@ public class AddEvent extends AppCompatActivity {
                 dialog.show();
             }
         });
-        mDisplayStartTime.setOnClickListener(new View.OnClickListener() {
+
+        chooseTime = findViewById(R.id.StartTime);
+        chooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+            public void onClick(View view) {
+                Calendar calendar;
+                int currentHour;
+                int currentMinute;
+                calendar = Calendar.getInstance();
+                currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
 
-                TimePickerDialog dialog = new TimePickerDialog(AddEvent.this, android.R.style.Theme_Holo_Light_Dialog,mDateSetListener2,hour, minute, true);
+                timePickerDialog = new TimePickerDialog(AddEvent.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
+                        if (hourOfDay >= 12) {
+                            amPm = "PM";
+                            chooseTime.setText(String.format("%02d:%02d", hourOfDay - 12, minutes) + amPm);
+                        } else {
+                            amPm = "AM";
+                            chooseTime.setText(String.format("%02d:%02d", hourOfDay, minutes) + amPm);
+                        }
 
+                    }
+                }, currentHour, currentMinute, false);
 
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                timePickerDialog.show();
+            }
+        });
+
+        chooseTime1 = findViewById(R.id.EndTime);
+        chooseTime1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar1;
+                int currentHour1;
+                int currentMinute1;
+                calendar1 = Calendar.getInstance();
+                currentHour1 = calendar1.get(Calendar.HOUR_OF_DAY);
+                currentMinute1 = calendar1.get(Calendar.MINUTE);
+
+                timePickerDialog1 = new TimePickerDialog(AddEvent.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker1, int hourOfDay1, int minutes1) {
+                        if (hourOfDay1 >= 12) {
+                            amPm1 = "PM";
+                            chooseTime1.setText(String.format("%02d:%02d", hourOfDay1 - 12, minutes1) + amPm1);
+                        } else {
+                            amPm1 = "AM";
+                            chooseTime1.setText(String.format("%02d:%02d", hourOfDay1, minutes1) + amPm1);
+                        }
+                    }
+                }, currentHour1, currentMinute1, false);
+
+                timePickerDialog1.show();
             }
         });
 
@@ -122,14 +171,6 @@ public class AddEvent extends AppCompatActivity {
             }
         };
 
-        mDateSetListener2 = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = hourOfDay + ":" + minute;
-                mDisplayStartTime.setText(time);
-            }
-        };
-
         mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -139,30 +180,6 @@ public class AddEvent extends AppCompatActivity {
 
             }
         };
-
-
-        mDisplayStartTime.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
-                int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(AddEvent.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        mDisplayStartTime.setText( selectedHour + ":" + selectedMinute);
-                    }
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-
-            }
-        });
-
-
-
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
