@@ -44,15 +44,97 @@
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="49dp" />
 
-                <TextView
-                    android:id="@+id/DateView"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Date"
-                    android:textColor="@color/dark_grey_white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="49dp" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/DateStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/startdate"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                    <TextView
+                        android:id="@+id/dash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/dash_mark"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                    <TextView
+                        android:id="@+id/DateEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1"
+                        android:text="@string/enddate"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/TimeStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/starttime"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                    <TextView
+                        android:id="@+id/dash2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginRight="2dp"
+                        android:text="@string/dash_mark"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                    <TextView
+                        android:id="@+id/TimeEnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:text="@string/endtime"
+                        android:textColor="@color/dark_grey_white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="49dp" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/LocationView"
