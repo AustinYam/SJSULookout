@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference myRef;
     ListView myListView;
+    Button discoverButton;
     ArrayList<String> myArrayList = new ArrayList<>();
     Map<String, String> mapDesc = new HashMap<>();
     Map<String, String> mapLoca = new HashMap<>();
@@ -76,6 +77,32 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference().child("events");
         mAuth = FirebaseAuth.getInstance();
+
+        //Discover Button
+        discoverButton = (Button) findViewById(R.id.discoverbutton);
+        discoverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EventPage.class);
+                int position = new Random().nextInt(myArrayList.size());
+                intent.putExtra("EventTitle", myArrayList.get(position));
+                intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
+                intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+                intent.putExtra("EventStartDate", mapStartDate.get(myArrayList.get(position)));
+                intent.putExtra("EventEndDate", mapEndDate.get(myArrayList.get(position)));
+                intent.putExtra("EventStartTime", mapStartTime.get(myArrayList.get(position)));
+                intent.putExtra("EventEndTime", mapEndTime.get(myArrayList.get(position)));
+                intent.putExtra("EventContact", mapCont.get(myArrayList.get(position)));
+                intent.putExtra("EventCount", mapAttend.get(myArrayList.get(position))+"");
+                //making id a String
+                intent.putExtra("EventId", mapId.get(myArrayList.get(position))+"");
+
+                intent.putExtra("Attending",false);
+                intent.putExtra("isUserEvent", false);
+
+                startActivity(intent);
+            }
+        });
 
         myListView = (ListView) findViewById(R.id.ListEvent);
         final MainActivity.CustomAdapter myArrayAdapter = new MainActivity.CustomAdapter();
@@ -131,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
                         intent.putExtra("Attending",false);
                         intent.putExtra("isUserEvent", false);
-                        
+
                         startActivity(intent);
                         return true;
                     case R.id.MyHome:
