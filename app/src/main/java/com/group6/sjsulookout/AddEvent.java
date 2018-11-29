@@ -5,7 +5,6 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,12 +23,14 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
+import java.util.Calendar;
 
 public class AddEvent extends AppCompatActivity {
 
@@ -51,6 +52,8 @@ public class AddEvent extends AppCompatActivity {
     private TextView mDisplayEndTime;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
+    private TimePickerDialog.OnTimeSetListener mDateSetListener2;
+    private TimePickerDialog.OnTimeSetListener mDateSetListener3;
 
 
 
@@ -78,6 +81,21 @@ public class AddEvent extends AppCompatActivity {
                 dialog.show();
             }
         });
+        mDisplayStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+
+                TimePickerDialog dialog = new TimePickerDialog(AddEvent.this, android.R.style.Theme_Holo_Light_Dialog,mDateSetListener2,hour, minute, true);
+
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
         mDisplayEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +122,14 @@ public class AddEvent extends AppCompatActivity {
             }
         };
 
+        mDateSetListener2 = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String time = hourOfDay + ":" + minute;
+                mDisplayStartTime.setText(time);
+            }
+        };
+
         mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -119,7 +145,6 @@ public class AddEvent extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 java.util.Calendar mcurrentTime = java.util.Calendar.getInstance();
                 int hour = mcurrentTime.get(java.util.Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(java.util.Calendar.MINUTE);
@@ -135,6 +160,8 @@ public class AddEvent extends AppCompatActivity {
 
             }
         });
+
+
 
 
 
@@ -261,6 +288,7 @@ public class AddEvent extends AppCompatActivity {
         });
 
     }
+
 
     // NAV BAR BUTTON FUNCTIONALITY
     @Override
