@@ -128,12 +128,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <EditText
                 android:id="@+id/StartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="16dp"
@@ -224,6 +226,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/NavDrawerStyle"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/golden_yellow"
         app:menu="@menu/drawer_view" />
 
 
