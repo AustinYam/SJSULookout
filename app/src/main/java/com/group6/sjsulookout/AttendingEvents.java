@@ -85,6 +85,7 @@ public class AttendingEvents extends AppCompatActivity {
                 String startTime= dataSnapshot.child("start time").getValue(String.class);
                 String endTime = dataSnapshot.child("end time").getValue(String.class);
                 String id = dataSnapshot.child("id").getValue(String.class);
+                String contact = dataSnapshot.child("contact").getValue(String.class);
 
                 if(dataSnapshot.child("attendees").getValue(Integer.class) == null){
                      eventCount = 0;
@@ -102,6 +103,7 @@ public class AttendingEvents extends AppCompatActivity {
                 mapStartTime.put(title,startTime);
                 mapEndTime.put(title,endTime);
                 mapCount.put(title,eventCount);
+                mapCont.put(title,contact);
                 mapId.put(title,id);
 
 

@@ -89,6 +89,7 @@ public class UserEvents extends AppCompatActivity {
                 String endDate = dataSnapshot.child("end date").getValue(String.class);
                 String startTime = dataSnapshot.child("start time").getValue(String.class);
                 String endTime = dataSnapshot.child("end time").getValue(String.class);
+                String contact = dataSnapshot.child("contact").getValue(String.class);
                 String id = dataSnapshot.child("id").getValue(String.class);
                 String userId = dataSnapshot.child("user id").getValue(String.class);
 
@@ -109,6 +110,7 @@ public class UserEvents extends AppCompatActivity {
                 mapCount.put(title,eventCount);
                 mapId.put(title,id);
                 mapUserId.put(title,userId);
+                mapCont.put(title,contact);
                 customAdapter.notifyDataSetChanged();
             }
 
