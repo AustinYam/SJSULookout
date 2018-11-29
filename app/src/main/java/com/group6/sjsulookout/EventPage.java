@@ -161,8 +161,10 @@ public class EventPage extends AppCompatActivity {
 
                             DatabaseReference userEventIdRef = userEventsRef.child(eventId);
                             DatabaseReference userEventAttendees = userEventIdRef.child("attendees");
-
                             userEventAttendees.setValue(newCount);
+
+
+
                         }else {
                             DatabaseReference newAttendeesRef = eventsRef.child("attendees");
                             newAttendeesRef.setValue(newCount);

@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="63dp"
-                        android:layout_marginStart="63dp"
+                        android:layout_marginStart="65dp"
                         android:layout_weight="1"
                         android:text="@string/dash_mark"
                         android:textColor="@color/dark_grey_white"

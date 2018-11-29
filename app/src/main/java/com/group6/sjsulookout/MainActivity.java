@@ -111,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent attendEvents = new Intent(getApplicationContext(), AttendingEvents.class);
                         startActivity(attendEvents);
                         return true;
+                    case R.id.Discover:
+                        item.setChecked(true); // set item as selected to persist highlight
+                        mDrawerLayout.closeDrawers(); // close drawer when item is tapped
+                        // Handle explore events click
+                        Intent discover = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(discover);
+                        return true;
                     case R.id.MyHome:
                         item.setChecked(true); // set item as selected to persist highlight
                         mDrawerLayout.closeDrawers(); // close drawer when item is tapped
@@ -177,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 mapCont.put(title, contact);
                 mapAttend.put(title, attendees);
                 mapId.put(title, id);
-                Log.d("TAG", "onChildAdded: "+ startDate);
                 myArrayAdapter.notifyDataSetChanged();
 
             }
