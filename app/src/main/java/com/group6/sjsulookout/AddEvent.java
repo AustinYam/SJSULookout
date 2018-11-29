@@ -279,6 +279,9 @@ public class AddEvent extends AppCompatActivity {
                 mStartTime.getText().clear();
                 mEndTime.getText().clear();
 
+                Intent intent = new Intent(AddEvent.this, UserEvents.class);
+                startActivity(intent);
+
 
 
             }
