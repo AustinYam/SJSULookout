@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
 public class EventPage extends AppCompatActivity {
@@ -53,8 +55,8 @@ public class EventPage extends AppCompatActivity {
         final String eventLoca = getIntent().getStringExtra("EventLocation");
         final String eventStartDate = getIntent().getStringExtra("EventStartDate");
         final String eventEndDate = getIntent().getStringExtra("EventEndDate");
-        final String eventStartTime = getIntent().getStringExtra("EventEndDate");
-        final String eventEndTime = getIntent().getStringExtra("EventEndDate");
+        final String eventStartTime = getIntent().getStringExtra("EventStartTime");
+        final String eventEndTime = getIntent().getStringExtra("EventEndTime");
         final String eventContact = getIntent().getStringExtra("EventContact");
         final String eventCount = getIntent().getStringExtra("EventCount");
         boolean attendingEvent = getIntent().getExtras().getBoolean("Attending");
@@ -103,7 +105,10 @@ public class EventPage extends AppCompatActivity {
         //WHAT YOU SEE ON EVENT PAGE
         TextView title = (TextView) findViewById(R.id.TitleView);
         TextView location = (TextView) findViewById(R.id.LocationView);
-        TextView date = (TextView) findViewById(R.id.DateView);
+        TextView startDate = (TextView) findViewById(R.id.DateStart);
+        TextView endDate = (TextView) findViewById(R.id.DateEnd);
+        TextView startTime = (TextView) findViewById(R.id.TimeStart);
+        TextView endTime = (TextView) findViewById(R.id.TimeEnd);
         TextView desc = (TextView) findViewById(R.id.DescView);
         TextView contact = (TextView) findViewById(R.id.ContactView);
         Button addEvent = (Button) findViewById(R.id.attendEvent);
@@ -111,7 +116,10 @@ public class EventPage extends AppCompatActivity {
         title.setText(eventTitle);
         desc.setText(eventDesc);
         location.setText(eventLoca);
-        date.setText(eventStartDate);
+        startDate.setText(eventStartDate);
+        endDate.setText(eventEndDate);
+        startTime.setText(eventStartTime);
+        endTime.setText(eventEndTime);
         contact.setText(eventContact);
 
         //GET DATA FOR USER ID

@@ -227,6 +227,7 @@ public class AddEvent extends AppCompatActivity {
                 DatabaseReference myEventId = myEventChild.child("id");
                 DatabaseReference myEventAttendees = myEventChild.child("attendees");
                 DatabaseReference myUserIdRef = myEventChild.child("user id");
+                DatabaseReference myEventContact = myEventChild.child("contact");
 
                 //Setting event values in database
                 myEventAttendees.setValue(1);
@@ -239,6 +240,7 @@ public class AddEvent extends AppCompatActivity {
                 myEventStartTime.setValue(startTime);
                 myEventEndTime.setValue(endTime);
                 myUserIdRef.setValue(userId);
+                myEventContact.setValue(userEmail);
 
                 //Adding own event to attending events
                 DatabaseReference myUserRef = mFirebaseDatabase.getReference().child("Users");

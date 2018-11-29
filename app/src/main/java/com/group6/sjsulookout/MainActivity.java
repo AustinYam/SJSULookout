@@ -177,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 mapCont.put(title, contact);
                 mapAttend.put(title, attendees);
                 mapId.put(title, id);
+                Log.d("TAG", "onChildAdded: "+ startDate);
                 myArrayAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -210,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("EventTitle", myArrayList.get(position));
                 intent.putExtra("EventDesc", mapDesc.get(myArrayList.get(position)));
                 intent.putExtra("EventLocation", mapLoca.get(myArrayList.get(position)));
+
                 intent.putExtra("EventStartDate", mapStartDate.get(myArrayList.get(position)));
                 intent.putExtra("EventEndDate", mapEndDate.get(myArrayList.get(position)));
                 intent.putExtra("EventStartTime", mapStartTime.get(myArrayList.get(position)));
@@ -251,8 +254,6 @@ public class MainActivity extends AppCompatActivity {
             TextView myTitle = (TextView) view.findViewById(R.id.titleView);
             TextView myDate = (TextView) view.findViewById(R.id.dateView);
             TextView myAttendees = (TextView) view.findViewById(R.id.CountView);
-            Log.d("TAG", myArrayList.size() + "");
-            Log.d("TAG", myArrayList.get(position) + "");
             myTitle.setText(myArrayList.get(position));
             myDate.setText(mapStartDate.get(myArrayList.get(position)));
             myAttendees.setText(mapAttend.get(myArrayList.get(position))+"");
