@@ -1,9 +1,13 @@
 package com.group6.sjsulookout;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -30,6 +34,8 @@ import org.w3c.dom.Text;
 
 import java.util.UUID;
 
+import static com.group6.sjsulookout.Notifications.CHANNEL_ID;
+
 public class EventPage extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
@@ -41,13 +47,19 @@ public class EventPage extends AppCompatActivity {
     private DatabaseReference myUserRef;
     private int newCount;
     private boolean isAdded;
-
+    private NotificationManagerCompat notificationManager;
+    private TextView textTitle;
+    private TextView textMessage;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_page);
+
+        notificationManager = NotificationManagerCompat.from(this);
+        textTitle = findViewById(R.id.TitleView);
+        textMessage = findViewById(R.id.DateStart);
 
         //Data from last activity
         final String eventTitle = getIntent().getStringExtra("EventTitle");
@@ -104,8 +116,10 @@ public class EventPage extends AppCompatActivity {
 
         //WHAT YOU SEE ON EVENT PAGE
         TextView title = (TextView) findViewById(R.id.TitleView);
+        textTitle = title;
         TextView location = (TextView) findViewById(R.id.LocationView);
         TextView startDate = (TextView) findViewById(R.id.DateStart);
+        textMessage = startDate;
         TextView endDate = (TextView) findViewById(R.id.DateEnd);
         TextView startTime = (TextView) findViewById(R.id.TimeStart);
         TextView endTime = (TextView) findViewById(R.id.TimeEnd);
@@ -177,7 +191,7 @@ public class EventPage extends AppCompatActivity {
                         attendeeRef.setValue(newCount);
                         contactRef.setValue(eventContact);
                         descRef.setValue(eventDesc);
-
+                        notifyMe();
                         toastMessage("Successfully added Event: " + eventTitle);
                     } else {
                         toastMessage("Event Already Added");
@@ -315,5 +329,20 @@ public class EventPage extends AppCompatActivity {
 
     private void toastMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public void notifyMe()
+    {
+        String title = textTitle.getText().toString();
+        String message = textMessage.getText().toString();
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("You're attending: " + title)
+                .setContentText("We'll remind you about this on " + message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(1, notification);
     }
 }
