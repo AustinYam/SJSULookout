@@ -10,6 +10,8 @@
     <string name="place">Location</string>
     <string name="startdate">Start Date</string>
     <string name="enddate">End Date</string>
+    <string name="date_ex">xx/xx/xx</string>
+    <string name="time_ex">xx:xx XM</string>
     <string name="starttime">Start Time</string>
     <string name="endtime">End Time</string>
     <string name="contents">Type to add content...</string>
