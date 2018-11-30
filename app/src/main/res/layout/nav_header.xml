@@ -12,7 +12,7 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:background="@color/IconBG"
-        android:src="@drawable/mike1"
+        android:src="@drawable/"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp" />
     <TextView
