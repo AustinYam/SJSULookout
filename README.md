@@ -16,4 +16,4 @@ https://github.com/AustinYam/SJSULookout\
 
 5. Test the application.
 
-For the code structure, we have java classes, and each class links to a res folder that stores our xml files. We use Firebase as our data structure and each class implements with Firebase.}
+*For the code structure, we have java classes, and each class links to a res folder that stores our xml files. We use Firebase as our data structure and each class implements with Firebase.*
