@@ -1,7 +1,7 @@
 # SJSULookout
 
 https://github.com/AustinYam/SJSULookout\
-
+Video Demo: https://youtu.be/aF6Jw6TEehs
 
 ## Installation Guide
 
